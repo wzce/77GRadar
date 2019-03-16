@@ -4,8 +4,8 @@ import numpy as np
 
 # from data_process import radar_data_decode
 from data_process import radar_data_decoder
-ORIGIN_TRAIN_DATA_DIR = "D:\home\zeewei\\20190308\ml\\train_data"
-ORIGIN_TEST_DATA_DIR = "D:\home\zeewei\\20190308\ml\\test_data"
+ORIGIN_TRAIN_DATA_DIR = "D:\home\zeewei\\20190308\ml_backup\\train_data"
+ORIGIN_TEST_DATA_DIR = "D:\home\zeewei\\20190308\ml_backup\\test_data"
 
 PROCESSED_TRAIN_DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\data\\train\\'
 PROCESSED_TEST_DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\data\\test\\'

@@ -1,2 +1,5 @@
 *.iml
 .idea/
+*.pkl
+*/__pycache__/*
+model/bp/__pycache__/
