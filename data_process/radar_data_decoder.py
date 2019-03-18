@@ -70,9 +70,7 @@ class RadarDataDecoder:
 
             if self.integer_reverse:
                 frame_data = reverse(frame_data)
-
             frame_data.dtype = 'uint32'
-
             if self.integer_reverse:
                 frame_data = reverse(frame_data)
 
@@ -112,12 +110,4 @@ class RadarDataDecoder:
 
             frame_chunk = new_frame_chunk
             zero_speed_data.append(frame_chunk[256])
-            # frame_chunk = np.transpose(frame_chunk).tolist()  # 尝试一下转置
-            # print('frame_index:', frame_index)
-            # print('第255行：', frame_chunk[255])
-            # print('第256行：', frame_chunk[256])
-            # first_row = frame_chunk[0]
-            # frame_chunk = np.transpose(frame_chunk).tolist()  # 尝试一下转置
-            # # generate_speed_and_distance_img_3d(frame_chunk, frame_index)
-            # generate_speed_and_distance_img_2d(frame_chunk, frame_index)
         return zero_speed_data
