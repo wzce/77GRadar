@@ -42,6 +42,7 @@ class Net(nn.Module):
         x = x.view(x.size(0), -1)
         return self.fc(x)
 
+
 def validate():
     model = torch.load(os.path.join(MODEL_SAVE_DIR, 'cnn_classification_3_13100_new.pkl'))
     # optimizer = torch.optim.Adam(model.parameters(), lr=LR)
@@ -81,5 +82,6 @@ def validate():
     target_y = test_label_tensor.data.cpu().numpy()
     accuracy = sum(pred_y == target_y) / len(target_y)  # 预测中有多少和真实值一样
     print('accuracy: ', accuracy)
+
 
 validate()

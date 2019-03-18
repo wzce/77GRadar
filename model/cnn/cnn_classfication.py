@@ -36,8 +36,6 @@ class Net(nn.Module):
 
     def forward(self, input_data):
         x = self.conv1d(input_data)
-        # x = self.conv2(x)
-        # x = self.conv3(x)
         x = x.view(x.size(0), -1)
         return self.fc(x)
 
@@ -73,10 +71,7 @@ def train():
     train_len = len(train_data)
     test_len = len(test_data)
     test_batch_num = test_len
-    # test_data = test_data[0: test_batch_num * 64]
-    # test_label_data = test_label_data[0:test_batch_num * 64]
     test_data = np.array(test_data).reshape(test_batch_num, 1, 64)
-    # test_label_data = np.array(test_label_data).reshape(test_batch_num, 1, 64)
     test_data_tensor = torch.FloatTensor(test_data).cuda(0)
     test_label_tensor = torch.LongTensor(test_label).cuda(0)
 
@@ -95,7 +90,7 @@ def train():
         test_loss = loss_func(test_prediction, test_label_tensor)
         test_loss = test_loss.data.cpu().numpy()
         if i % 50 == 0:
-            if test_loss < 0.200:
+            if test_loss < 0.005:
                 if test_loss < min_loss:
                     min_loss = test_loss
                 torch.save(model, MODEL_SAVE_DIR + 'cnn_classification_3_' + str(i) + '_new.pkl')
