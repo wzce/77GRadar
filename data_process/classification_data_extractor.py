@@ -3,7 +3,9 @@ import sys
 import numpy as np
 from data_process import radar_data_decoder
 
-ORIGIN_CAR_DATA_DIR = "D:\home\zeewei\\20190308\classfication_data\cars"
+ORIGIN_CAR_DATA_DIR = "D:\home\zeewei\\20190308\car_data"
+
+# ORIGIN_CAR_DATA_DIR = "D:\home\zeewei\\20190308\classfication_data\cars"
 ORIGIN_EMPTY_DATA_DIR = "D:\home\zeewei\\20190308\classfication_data\empty"
 
 

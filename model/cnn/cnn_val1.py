@@ -5,9 +5,6 @@ from data_process import feature_extractor
 import math
 
 
-# import radar.cnn.Cnn
-
-
 class Net(nn.Module):
     def __init__(self, INPUT_SIZEINPUT_SIZE):
         super(Net, self).__init__()

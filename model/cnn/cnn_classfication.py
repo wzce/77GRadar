@@ -1,6 +1,7 @@
 import torch
 from torch import nn
 import numpy as np
+import random
 from data_process import classification_data_extractor
 
 MODEL_SAVE_DIR = 'D:\home\zeewei\projects\\77GRadar\model\cnn\model_dir\model_classification\\'
@@ -41,7 +42,7 @@ class Net(nn.Module):
 
 
 loss_func = torch.nn.CrossEntropyLoss()
-LR = 1e-4
+LR = 1e-3
 
 
 def train():
@@ -50,7 +51,9 @@ def train():
     extractor = classification_data_extractor.ClassificationExtractor()  # 此处全使用默认的文件路径配置,获取有目标数据和无目标数据
 
     car_data = extractor.load_car_data()
+    random.shuffle(car_data)
     empty_data = extractor.load_empty_data()
+    random.shuffle(empty_data)
 
     car_train_data_len = int(2 * len(car_data) / 3)
     empty_train_data_len = int(2 * len(empty_data) / 3)
@@ -67,6 +70,9 @@ def train():
     for item in empty_test_data:
         test_data.append(item)
         test_label.append(0)
+
+    np.save('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data\\input_data.npy', test_data)
+    np.save('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data\\label_data.npy', test_label)
 
     train_len = len(train_data)
     test_len = len(test_data)
@@ -90,11 +96,13 @@ def train():
         test_loss = loss_func(test_prediction, test_label_tensor)
         test_loss = test_loss.data.cpu().numpy()
         if i % 50 == 0:
-            if test_loss < 0.005:
-                if test_loss < min_loss:
-                    min_loss = test_loss
+            if test_loss < min_loss:
+                min_loss = test_loss
+
+            if test_loss < 0.032:
                 torch.save(model, MODEL_SAVE_DIR + 'cnn_classification_3_' + str(i) + '_new.pkl')
-            print(i, ' train_mean_loss: ', loss.data.cpu().numpy(), ' test_loss: ', test_loss)
+            print(i, ' train_mean_loss: ', loss.data.cpu().numpy(),
+                  ' test_loss: ', test_loss, 'min_loss: ', min_loss)
     print('test_min_loss: ', min_loss)
 
 
