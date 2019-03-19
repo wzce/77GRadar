@@ -42,23 +42,10 @@ class Net(nn.Module):
 
 def validate():
     model = torch.load(os.path.join(MODEL_SAVE_DIR, 'cnn_classification_3_12400_new.pkl'))
-    extractor = classification_data_extractor.ClassificationExtractor()  # 此处全使用默认的文件路径配置,获取有目标数据和无目标数据
-
-    car_data = extractor.load_car_data()
-    empty_data = extractor.load_empty_data()
-
-    car_train_data_len = int(2 * len(car_data) / 3)
-    empty_train_data_len = int(2 * len(empty_data) / 3)
-
-    # test_data = car_data #[car_train_data_len:len(car_data)]
-    # test_label = [1 for i in range(len(test_data))]
-    # empty_test_data = empty_data[empty_train_data_len:len(empty_data)]
-    # for item in empty_test_data:
-    #     test_data.append(item)
-    #     test_label.append(0)
+    # extractor = classification_data_extractor.ClassificationExtractor()  # 此处全使用默认的文件路径配置,获取有目标数据和无目标数据
 
     test_data = np.load('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data\\input_data.npy')
-    test_label= np.load('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data\\label_data.npy')
+    test_label = np.load('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data\\label_data.npy')
 
     test_len = len(test_data)
     test_batch_num = test_len
