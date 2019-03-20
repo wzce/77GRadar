@@ -8,9 +8,9 @@ from data_process import radar_data_decoder
 ORIGIN_DATA_DIR = "D:\home\zeewei\\20190319\\radar_data\\"
 # ORIGIN_TEST_DATA_DIR = "D:\home\zeewei\\20190308\ml_backup\\test_data"
 
-PROCESSED_DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\data_process\playground_data'
+PROCESSED_DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\data_process\pg_data_avg'
 # PROCESSED_TEST_DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\data\\test\\'
-INPUT_DATA_FILE_NAME = 'input_data.npy'
+INPUT_DATA_FILE_NAME = 'input_data_50.npy'
 # OUT_DATA_FILE_NAME = 'label.npy'
 
 # SHORT_LINE = 2  # 分道线，白色的条状，长2m
@@ -71,8 +71,11 @@ class FeatureExtractor:
         for item_path in data_item_list:
             data_path = os.path.join(self.origin_data_dir, item_path)
             file_data, goal_location_data = self.extract_feature_from_a_goal(data_path)
-            print(str(index)+ ' finish reading a origin file : ', data_path)
-            for frame in file_data:
+            print(str(index) + ' finish reading a origin file : ', data_path)
+            for i in range(len(file_data)):
+                if i > 50:
+                    break
+                frame = file_data[i]
                 a_group_data = []  # 一组数据，0,1两列，第一列是信号强度，第二列是标注数据，位置数据
                 a_group_data.append(frame)
                 a_group_data.append(goal_location_data)
@@ -82,8 +85,7 @@ class FeatureExtractor:
 
         return input_data_list
 
-    def load_data(self):
-
+    def load_data(self, ):
         process_file = os.path.join(PROCESSED_DATA_DIR, INPUT_DATA_FILE_NAME)
         if os.path.exists(process_file):
             print('read from processed numpy file--->')
@@ -100,4 +102,4 @@ class FeatureExtractor:
 if __name__ == '__main__':
     extractor = FeatureExtractor()
     input_data_list = extractor.load_data()
-    print('input_data_list: ', input_data_list)
+    print('input_data_list: ', len(input_data_list))

@@ -44,8 +44,10 @@ def validate():
     model = torch.load(os.path.join(MODEL_SAVE_DIR, 'cnn_classification_3_12400_new.pkl'))
     # extractor = classification_data_extractor.ClassificationExtractor()  # 此处全使用默认的文件路径配置,获取有目标数据和无目标数据
 
-    test_data = np.load('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data\\input_data.npy')
-    test_label = np.load('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data\\label_data.npy')
+    # test_data = np.load('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data\\input_data.npy')
+    # test_label = np.load('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data\\label_data.npy')
+    test_data = np.load('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data_pg\\input_data_pg_classification.npy')
+    test_label = np.load('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data_pg\\label_data_classification.npy')
 
     test_len = len(test_data)
     test_batch_num = test_len

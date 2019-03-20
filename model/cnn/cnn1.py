@@ -1,6 +1,7 @@
 import torch
 from torch import nn
 import numpy as np
+import random
 # from data_process import feature_extractor
 
 from data_process import extractor
@@ -64,17 +65,18 @@ def loss_fn(predict, target):
 
 
 INPUT_SIZE = 1
-LR = 1e-4
-batch_num = 100
+LR = 1e-3
+# batch_num = 100
 batch_size = 7
 
-MODEL_SAVE_DIR = 'D:\home\zeewei\projects\\77GRadar\model\cnn\model_dir\model_cnn1_pg\\'
+MODEL_SAVE_DIR = 'D:\home\zeewei\projects\\77GRadar\model\cnn\model_dir\model_cnn1_pg_avg\\'
 
 
 def train_playground():
     model = Net(INPUT_SIZE).cuda(0)
     optimizer = torch.optim.Adam(model.parameters(), lr=LR)
-    data_extractor = extractor.FeatureExtractor  # 此处全使用默认的文件路径配置
+    data_extractor = extractor.FeatureExtractor()  # 此处全使用默认的文件路径配置
+
     data_list = data_extractor.load_data()
 
     random.shuffle(data_list)
@@ -96,8 +98,8 @@ def train_playground():
         test_data_input.append(item[0])
         test_data_label.append(item[1])
 
-    np.save('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data_pg\\input_data.npy', test_data)
-    np.save('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data_pg\\label_data.npy', test_label)
+    np.save('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data_pg\\input_data_avg_50.npy', test_data_input)
+    np.save('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data_pg\\label_data_avg_50.npy', test_data_label)
 
     # test_len = len(test_data)
     test_batch_num = len(test_data_input)
@@ -114,7 +116,7 @@ def train_playground():
     train_label_tensor = torch.FloatTensor(train_data_label).cuda(0)
 
     min_loss = 2
-    for i in range(300):
+    for i in range(3000):
         # loss_sum = 0
         # for step in range(int(data_len / 10)):
         optimizer.zero_grad()
@@ -135,11 +137,14 @@ def train_playground():
         test_loss = test_loss.data.cpu().numpy()
         # if loss_sum / data_len < 0.077:
         #     torch.save(model, MODEL_SAVE_DIR + 'cnn3_' + str(i) + '_new.pkl')
-        if test_loss < 0.200:
+
+        if i % 50 == 0:
             if test_loss < min_loss:
                 min_loss = test_loss
-            torch.save(model, MODEL_SAVE_DIR + 'cnn3_' + str(i) + '_new.pkl')
-        print(i, ' train_mean_loss: ', loss_val, ' test_loss: ', test_loss)
+            if test_loss < 0.6973200:
+                torch.save(model, MODEL_SAVE_DIR + 'cnn3_pg' + str(i) + '_new.pkl')
+            print(i, ' train_mean_loss: ', loss_val,
+                  ' test_loss: ', test_loss, 'min_loss: ', min_loss)
     print('test_min_loss: ', min_loss)
 
 
@@ -190,4 +195,4 @@ def train_playground():
 
 
 if __name__ == '__main__':
-    train()
+    train_playground()

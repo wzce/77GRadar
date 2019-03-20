@@ -1,0 +1,35 @@
+误差10m:
+全部数据
+total: 10733
+    | correct_num: 3820
+    | correct_rate: 0.3559116742755986
+    | relative_correct_num :  4846
+    | relative_correct_rate:  0.4515047051150657
+
+去掉30m前的数据：
+total: 10733  
+    | correct_num: 2037
+    | correct_rate: 0.23816204840406874
+    | relative_correct_num :  2829
+    | relative_correct_rate:  0.3307611364433532
+    
+去掉80m之后的数据
+total: 10733  
+    | correct_num: 3527 
+    | correct_rate: 0.4610457516339869 
+    | relative_correct_num :  4278 
+    | relative_correct_rate:  0.5592156862745098
+
+去掉90m之后的数据：
+total: 10733
+    | correct_num: 3771
+    | correct_rate: 0.39089872499222555
+    | relative_correct_num :  4739
+    | relative_correct_rate:  0.49124080024878203
+
+正确个数的分布情况，每个数依次代表10m的范围：
+    [1783, 1155, 734, 154, 4, 5, 6, 7, 8, 9, 10]
+    [2180, 2656, 4281,1622,4, 5, 6, 7, 8, 9, 10]
+数据分布
+              
+              

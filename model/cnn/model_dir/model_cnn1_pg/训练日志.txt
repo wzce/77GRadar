@@ -1,0 +1,57 @@
+D:\Anaconda\python.exe D:/home/zeewei/projects/77GRadar/model/cnn/cnn1.py
+read from processed numpy file--->
+D:\Anaconda\lib\site-packages\torch\nn\modules\container.py:92: UserWarning: Implicit dimension choice for softmax has been deprecated. Change the call to include dim=X as an argument.
+  input = module(input)
+0  train_mean_loss:  0.7023897  test_loss:  0.70240885 min_loss:  0.70240885
+50  train_mean_loss:  0.69841355  test_loss:  0.6971275 min_loss:  0.6971275
+100  train_mean_loss:  0.69815  test_loss:  0.6968448 min_loss:  0.6968448
+150  train_mean_loss:  0.69812626  test_loss:  0.69679713 min_loss:  0.69679713
+200  train_mean_loss:  0.6981231  test_loss:  0.6967926 min_loss:  0.6967926
+250  train_mean_loss:  0.6981228  test_loss:  0.6967929 min_loss:  0.6967926
+300  train_mean_loss:  0.69812274  test_loss:  0.6967925 min_loss:  0.6967925
+350  train_mean_loss:  0.69812274  test_loss:  0.69679207 min_loss:  0.69679207
+400  train_mean_loss:  0.6981227  test_loss:  0.69679177 min_loss:  0.69679177
+450  train_mean_loss:  0.6981227  test_loss:  0.69679147 min_loss:  0.69679147
+500  train_mean_loss:  0.6981227  test_loss:  0.6967914 min_loss:  0.6967914
+550  train_mean_loss:  0.6981227  test_loss:  0.69679123 min_loss:  0.69679123
+600  train_mean_loss:  0.6981227  test_loss:  0.6967912 min_loss:  0.6967912
+650  train_mean_loss:  0.6981227  test_loss:  0.6967911 min_loss:  0.6967911
+700  train_mean_loss:  0.6981227  test_loss:  0.69679105 min_loss:  0.69679105
+750  train_mean_loss:  0.6981227  test_loss:  0.69679093 min_loss:  0.69679093
+800  train_mean_loss:  0.6981227  test_loss:  0.6967909 min_loss:  0.6967909
+850  train_mean_loss:  0.6981227  test_loss:  0.6967909 min_loss:  0.6967909
+900  train_mean_loss:  0.6981227  test_loss:  0.6967908 min_loss:  0.6967908
+950  train_mean_loss:  0.6981227  test_loss:  0.6967908 min_loss:  0.6967908
+1000  train_mean_loss:  0.6981227  test_loss:  0.69679075 min_loss:  0.69679075
+1050  train_mean_loss:  0.6981227  test_loss:  0.69679075 min_loss:  0.69679075
+1100  train_mean_loss:  0.6981227  test_loss:  0.69679075 min_loss:  0.69679075
+1150  train_mean_loss:  0.6981227  test_loss:  0.6967907 min_loss:  0.6967907
+1200  train_mean_loss:  0.6981227  test_loss:  0.6967907 min_loss:  0.6967907
+1250  train_mean_loss:  0.6981227  test_loss:  0.6967907 min_loss:  0.6967907
+1300  train_mean_loss:  0.6981227  test_loss:  0.6967907 min_loss:  0.6967907
+1350  train_mean_loss:  0.6981225  test_loss:  0.6967907 min_loss:  0.6967907
+1400  train_mean_loss:  0.6981227  test_loss:  0.69679064 min_loss:  0.69679064
+1450  train_mean_loss:  0.6981227  test_loss:  0.69679064 min_loss:  0.69679064
+1500  train_mean_loss:  0.6981227  test_loss:  0.6967906 min_loss:  0.6967906
+1550  train_mean_loss:  0.69812256  test_loss:  0.6967906 min_loss:  0.6967906
+1600  train_mean_loss:  0.69812256  test_loss:  0.69679064 min_loss:  0.6967906
+1650  train_mean_loss:  0.69812256  test_loss:  0.6967906 min_loss:  0.6967906
+1700  train_mean_loss:  0.69812256  test_loss:  0.69679064 min_loss:  0.6967906
+1750  train_mean_loss:  0.69812256  test_loss:  0.69679064 min_loss:  0.6967906
+1800  train_mean_loss:  0.69812256  test_loss:  0.6967906 min_loss:  0.6967906
+1850  train_mean_loss:  0.69812256  test_loss:  0.6967906 min_loss:  0.6967906
+1900  train_mean_loss:  0.6981225  test_loss:  0.6967906 min_loss:  0.6967906
+1950  train_mean_loss:  0.6981225  test_loss:  0.6967906 min_loss:  0.6967906
+2000  train_mean_loss:  0.69812256  test_loss:  0.6967906 min_loss:  0.6967906
+2050  train_mean_loss:  0.69812256  test_loss:  0.6967906 min_loss:  0.6967906
+2100  train_mean_loss:  0.69812256  test_loss:  0.6967906 min_loss:  0.6967906
+2150  train_mean_loss:  0.6981225  test_loss:  0.6967906 min_loss:  0.6967906
+2200  train_mean_loss:  0.69812256  test_loss:  0.6967906 min_loss:  0.6967906
+2250  train_mean_loss:  0.6981225  test_loss:  0.69679046 min_loss:  0.69679046
+2300  train_mean_loss:  0.6981225  test_loss:  0.6967905 min_loss:  0.69679046
+2350  train_mean_loss:  0.6981225  test_loss:  0.69679046 min_loss:  0.69679046
+2400  train_mean_loss:  0.6981225  test_loss:  0.69679046 min_loss:  0.69679046
+2450  train_mean_loss:  0.6981225  test_loss:  0.69679046 min_loss:  0.69679046
+2500  train_mean_loss:  0.6981225  test_loss:  0.69679046 min_loss:  0.69679046
+
+Process finished with exit code -1
