@@ -43,7 +43,7 @@ class Net(nn.Module):
 
 
 def validate():
-    model = torch.load(os.path.join(MODEL_SAVE_DIR, 'cnn_classification_3_1900_pg.pkl'))
+    model = torch.load(os.path.join(MODEL_SAVE_DIR, 'cnn_classification_3_1020_all.pkl'))
     # extractor = classification_data_extractor.ClassificationExtractor()  # 此处全使用默认的文件路径配置,获取有目标数据和无目标数据
 
     # test_data = np.load('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data\\input_data.npy') #道路数据
@@ -52,12 +52,25 @@ def validate():
     # test_data = np.load('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data_pg\\input_data_pg_classification.npy')
     # test_label = np.load('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data_pg\\label_data_classification.npy')
 
-    # test_data = np.load('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data_pg\\input_data_classification_all.npy')
-    # test_label = np.load('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data_pg\\label_data_classification_all.npy')
+    test_data = np.load('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data_pg\\input_data_classification_all.npy')
+    test_label = np.load('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data_pg\\label_data_classification_all.npy')
 
-    test_data = np.load(
-        'D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data_pg\\input_data_classification_pg_car_data.npy')
-    test_label = [1 for i  in range(len(test_data))]
+    # test_data = np.load(
+    #     'D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data_pg\\input_data_classification_pg_car_data.npy')
+    # test_data = test_data.tolist()
+    # print('car_data length: ', len(test_data))
+    # test_label = [1 for i in range(len(test_data))]
+    #
+    # empty_data = np.load(
+    #     'D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data_pg\\input_data_classification_pg_empty_data.npy')
+    # print('empty_data length: ', len(empty_data))
+    #
+    # for item in empty_data:
+    #     test_data.append(item)
+    #     test_label.append(0)
+
+    # test_data = np.load('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data_pg\\input_data_classification_road.npy')
+    # test_label = np.load('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data_pg\\label_data_classification_road.npy')
 
     print('test_label : ', test_label)
 

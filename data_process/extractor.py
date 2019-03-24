@@ -23,7 +23,7 @@ GAP = 3  # 距离分辨率，3m
 class FeatureExtractor:
     def __init__(self, origin_data_dir=ORIGIN_DATA_DIR):
         self.origin_data_dir = origin_data_dir
-        self.radar_data_decoder = radar_data_decoder.RadarDataDecoder()
+        self.radar_data_decoder = radar_data_decoder.RadarDataDecoder(integer_reverse=False)
 
     def generate_goal_location_list(self, full_path, output_list_len=OUTPUT_LIST_LEN, gap=GAP):
         # print('full_path: ',full_path)
@@ -73,7 +73,7 @@ class FeatureExtractor:
             file_data, goal_location_data = self.extract_feature_from_a_goal(data_path)
             print(str(index) + ' finish reading a origin file : ', data_path)
             for i in range(len(file_data)):
-                if i > 50:
+                if i > 70:
                     break
                 frame = file_data[i]
                 a_group_data = []  # 一组数据，0,1两列，第一列是信号强度，第二列是标注数据，位置数据

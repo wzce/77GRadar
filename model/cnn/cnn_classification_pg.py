@@ -51,7 +51,7 @@ def load_data(type=1):
     empty_extc = empty_extractor.PGEmptyFeatureExtractor()
     empty_data = empty_extc.load_data()
     empty_data = empty_data.tolist()
-    print('empty_data: ', empty_data)
+    # print('empty_data: ', empty_data)
 
     # 有目标的类别
     data_extractor = extractor.FeatureExtractor()  # 此处全使用默认的文件路径配置
@@ -63,9 +63,14 @@ def load_data(type=1):
     for item in car_data_list:
         input_data.append(item[0])  # 强度信息
     random.shuffle(input_data)
-    car_data = input_data[0:6000]
-    pg_car_data = input_data[6000:]
-    np.save('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data_pg\\input_data_classification_pg_car_data.npy', pg_car_data)
+    car_data = input_data[0:5490]
+
+    # 存储起来用来做验证的
+    pg_car_data = input_data[5490:]
+    np.save('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data_pg\\input_data_classification_pg_car_data.npy',
+            pg_car_data)
+    np.save('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data_pg\\input_data_classification_pg_empty_data.npy',
+            empty_data[300:])
 
     if type != 1:
         random.shuffle(car_data)
@@ -128,6 +133,76 @@ def train():
     test_label_tensor = torch.LongTensor(test_label).cuda(0)
 
     min_loss = 2
+    for i in range(3000):
+        optimizer.zero_grad()
+        x = np.array(train_data).reshape(train_len, 1, 64)
+        x = torch.FloatTensor(x).cuda(0)
+        y = torch.LongTensor(train_label).cuda(0)
+        prediction = model(x)
+        loss = loss_func(prediction, y)
+        loss.backward()
+        optimizer.step()
+
+        test_prediction = model(test_data_tensor)
+        test_loss = loss_func(test_prediction, test_label_tensor)
+        test_loss = test_loss.data.cpu().numpy()
+        if i % 30 == 0:
+            if test_loss < min_loss:
+                min_loss = test_loss
+
+            if test_loss < 0.08:
+                torch.save(model, MODEL_SAVE_DIR + 'cnn_classification_3_' + str(i) + '_all.pkl')
+            print(i, ' train_mean_loss: ', loss.data.cpu().numpy(),
+                  ' test_loss: ', test_loss, 'min_loss: ', min_loss)
+    print('test_min_loss: ', min_loss)
+
+
+def train_with_pg_test_with_road():
+    model = Net().cuda(0)
+    optimizer = torch.optim.Adam(model.parameters(), lr=LR)
+    # extractor = classification_data_extractor.ClassificationExtractor()  # 此处全使用默认的文件路径配置,获取有目标数据和无目标数据
+
+    # car_data = extractor.load_car_data()
+    # random.shuffle(car_data)
+    car_data, empty_data = load_data(1)  # 获取操场数据作为训练
+    random.shuffle(empty_data)
+    random.shuffle(car_data)
+
+    train_data = car_data[0:5490]
+    empty_train_data = empty_data
+    train_label = [1 for i in range(len(train_data))]
+    for item in empty_train_data:
+        train_data.append(item)
+        train_label.append(0)
+
+    ''' 下面获取道路数据作为测试集数据'''
+    road_extractor = classification_data_extractor.ClassificationExtractor()
+    road_car_data = road_extractor.load_car_data()
+    random.shuffle(road_car_data)
+    road_car_data = road_car_data[0:300]
+    # for item in road_car_data:
+    #     car_data.append(item)
+    road_empty_data = road_extractor.load_empty_data()
+    print('road_empty_data: ', len(road_empty_data))
+
+    test_data = road_car_data
+    test_label = [1 for i in range(len(test_data))]
+    # empty_test_data = empty_data[empty_train_data_len:len(empty_data)]
+    for item in road_empty_data:
+        test_data.append(item)
+        test_label.append(0)
+
+    np.save('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data_pg\\input_data_classification_road.npy', test_data)
+    np.save('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data_pg\\label_data_classification_road.npy', test_label)
+
+    train_len = len(train_data)
+    test_len = len(test_data)
+    test_batch_num = test_len
+    test_data = np.array(test_data).reshape(test_batch_num, 1, 64)
+    test_data_tensor = torch.FloatTensor(test_data).cuda(0)
+    test_label_tensor = torch.LongTensor(test_label).cuda(0)
+
+    min_loss = 100
     for i in range(130000):
         optimizer.zero_grad()
         x = np.array(train_data).reshape(train_len, 1, 64)
@@ -145,8 +220,8 @@ def train():
             if test_loss < min_loss:
                 min_loss = test_loss
 
-            if test_loss < 0.106:
-                torch.save(model, MODEL_SAVE_DIR + 'cnn_classification_3_' + str(i) + '_pg.pkl')
+            if test_loss < 5:
+                torch.save(model, MODEL_SAVE_DIR + 'cnn_classification_3_' + str(i) + '_all_300.pkl')
             print(i, ' train_mean_loss: ', loss.data.cpu().numpy(),
                   ' test_loss: ', test_loss, 'min_loss: ', min_loss)
     print('test_min_loss: ', min_loss)

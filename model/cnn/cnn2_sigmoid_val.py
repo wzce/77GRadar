@@ -49,10 +49,10 @@ class Net(nn.Module):
         return self.fc(x)
 
 
-model = torch.load('D:\home\zeewei\projects\\77GRadar\model\cnn\model_dir\model_cnn1_pg_avg_sig\cnn3_pg350_new.pkl')
+model = torch.load('D:\home\zeewei\projects\\77GRadar\model\cnn\model_dir\model_cnn1_pg_avg_sig\cnn3_pg440_nn.pkl')
 
-input_data = np.load('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data_pg\\input_data_avg_50.npy')
-label_data = np.load('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data_pg\\label_data_avg_50.npy')
+input_data = np.load('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data_pg\\input_data_avg_50_sig.npy')
+label_data = np.load('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data_pg\\label_data_avg_50_sig.npy')
 
 # data_extractor = feature_extractor.FeatureExtractor()  # 此处全使用默认的文件路径配置
 # input_data, label_data = data_extractor.load_test_data()
