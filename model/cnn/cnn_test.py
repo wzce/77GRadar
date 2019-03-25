@@ -92,5 +92,5 @@ def model_test(model_path):
 
 if __name__ == '__main__':
     model_location = 'D:\home\zeewei\projects\\77GRadar\model\cnn\model_dir\cnn3'
-    model_path = os.path.join(model_location, 'cnn_1800.pkl')
+    model_path = os.path.join(model_location, 'cnn_57150.pkl')
     model_test(model_path)

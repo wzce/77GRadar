@@ -7,10 +7,25 @@ from torch import nn
 LR = 1e-4
 bce_loss = nn.BCEWithLogitsLoss()
 
-
 def loss_fn(predict, target):
     loss = bce_loss(predict.view(-1), target.view(-1))
     return loss
+
+# SEQ_LEN = 64
+#
+#
+# def loss_fn(predict, target):
+#     one_mask = torch.eq(target, 1).cuda(0)
+#     # one_mask[0] = 1
+#     zero_mask = torch.randint(SEQ_LEN, size=target.shape).cuda(0) > 58
+#     mask = one_mask | zero_mask
+#     # print('     mask: ', mask.view(-1).data.cpu().numpy())
+#     # m= mask.data.cpu().numpy().tolist()
+#     predict = torch.masked_select(predict, mask)
+#     target = torch.masked_select(target, mask)
+#
+#     loss = bce_loss(predict, target)
+#     return loss
 
 
 def train(model, model_save_dir, epochs=1000, save_line=0.7, learn_rate=LR):

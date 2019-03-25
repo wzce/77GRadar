@@ -138,9 +138,9 @@ class RadarCnn3(nn.Module):
             ),
             nn.MaxPool1d(kernel_size=2)
         )
-        self.out = nn.Sequential(nn.Linear(16, 16),
+        self.out = nn.Sequential(nn.Linear(16, 32),
                                  nn.ReLU(True),
-                                 nn.Linear(16, 64),
+                                 nn.Linear(32, 64),
                                  nn.Softmax())  # 分类器，预测位置最大的一个
 
     def forward(self, input_data):

@@ -78,7 +78,7 @@ def loss_fn(predict, target):
     # t = target.data
     one_mask = torch.eq(target, 1).cuda(0)
     # one_mask[0] = 1
-    zero_mask = torch.randint(64, size=target.shape).cuda(0) > 62
+    zero_mask = torch.randint(64, size=target.shape).cuda(0) > 58
     mask = one_mask | zero_mask
     # m= mask.data.cpu().numpy().tolist()
     predict = torch.masked_select(predict.view(-1), mask.view(-1))
@@ -93,7 +93,7 @@ LR = 1e-4
 # batch_num = 100
 batch_size = 7
 
-MODEL_SAVE_DIR = 'D:\home\zeewei\projects\\77GRadar\model\cnn\model_dir\model_cnn1_pg_avg_sig\\'
+MODEL_SAVE_DIR = 'D:\home\zeewei\projects\\77GRadar\model\cnn\model_dir\cnn_sig\\'
 
 
 def train_playground():

@@ -49,7 +49,7 @@ class Net(nn.Module):
         return self.fc(x)
 
 
-model = torch.load('D:\home\zeewei\projects\\77GRadar\model\cnn\model_dir\model_cnn1_pg_avg_sig\cnn3_pg440_nn.pkl')
+model = torch.load('D:\home\zeewei\projects\\77GRadar\model\cnn\model_dir\cnn_sig\cnn3_pg730_nn.pkl')
 
 input_data = np.load('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data_pg\\input_data_avg_50_sig.npy')
 label_data = np.load('D:\home\zeewei\projects\\77GRadar\model\cnn\\test_data_pg\\label_data_avg_50_sig.npy')
@@ -83,7 +83,7 @@ for step in range(len(input_data)):
     #
     # predict = prediction
     # predict = torch.ByteTensor(predict).cuda(0)
-    predict = torch.sigmoid(prediction) > 0.5
+    predict = torch.sigmoid(prediction) > 0.35
 
     print('y:     ', y)
     print('predict:', predict)

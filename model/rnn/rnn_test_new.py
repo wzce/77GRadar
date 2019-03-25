@@ -60,9 +60,9 @@ def model_test(model_path):
         # predict = torch.sigmoid(prediction) > 0.5
 
         # predict = prediction
-        # print('y:     ', y)
-        # print('predict:', predict)
-        # print(torch.eq(y, predict))
+        print('y:      ', y.data.cpu().numpy().tolist())
+        print('predict:', predict.data.cpu().numpy().tolist())
+        print(torch.eq(y, predict))
 
         max_predict_index = torch.max(predict, 1)[1].data.cpu().numpy()[0]
 
@@ -93,6 +93,6 @@ def model_test(model_path):
 
 
 if __name__ == '__main__':
-    model_location = 'D:\home\zeewei\projects\\77GRadar\model\\rnn\model_save_dir\\rnn1'
-    model_path = os.path.join(model_location, 'rnn_180.pkl')
+    model_location = 'D:\home\zeewei\projects\\77GRadar\model\\rnn\model_save_dir\\rnn2'
+    model_path = os.path.join(model_location, 'rnn_loss2_8900.pkl')
     model_test(model_path)

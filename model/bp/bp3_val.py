@@ -83,7 +83,7 @@ for step in range(len(input_data)):
     predict[index] = 1
     predict = [predict]
     predict = torch.ByteTensor(predict).cuda(0)
-    # predict = torch.sigmoid(prediction) > 0.5
+    predict = torch.sigmoid(prediction) > 0.5
 
     # predict = prediction
     # print('y:     ', y)

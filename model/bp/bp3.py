@@ -49,7 +49,7 @@ def decrease_range_resolution(list, n=2):
 
 def train():
     model = BP_Net().cuda(0)
-    optimizer = torch.optim.Adam(model.parameters(), lr=5e-7)
+    optimizer = torch.optim.Adam(model.parameters(), lr=5e-5)
 
     # data_extractor = feature_extractor.FeatureExtractor()  # 此处全使用默认的文件路径配置
 
