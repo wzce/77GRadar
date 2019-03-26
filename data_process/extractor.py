@@ -5,12 +5,13 @@ import numpy as np
 # from data_process import radar_data_decode
 from data_process import radar_data_decoder
 
-ORIGIN_DATA_DIR = "D:\home\zeewei\\20190319\\radar_data\\"
+# ORIGIN_DATA_DIR = "D:\home\zeewei\\20190319\\radar_data\\"
+ORIGIN_DATA_DIR = "D:\home\zeewei\\20190324\\"
 # ORIGIN_TEST_DATA_DIR = "D:\home\zeewei\\20190308\ml_backup\\test_data"
 
 PROCESSED_DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\data_process\pg_data_avg'
 # PROCESSED_TEST_DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\data\\test\\'
-INPUT_DATA_FILE_NAME = 'input_data_50.npy'
+INPUT_DATA_FILE_NAME = '2019_03-26_input_data.npy'
 # OUT_DATA_FILE_NAME = 'label.npy'
 
 # SHORT_LINE = 2  # 分道线，白色的条状，长2m
@@ -51,7 +52,7 @@ class FeatureExtractor:
 
     def extract_feature_from_a_goal(self, goal_data_folder_path):
         file_lists = os.listdir(goal_data_folder_path)
-        file_data = []
+        file_data_list = []
         goal_location_data = []
         for file in file_lists:
             target_file = os.path.join(goal_data_folder_path, file)
@@ -59,8 +60,10 @@ class FeatureExtractor:
                 goal_location_data = self.generate_goal_location_list(target_file)
             if file[-4:] == '.dat':  # 找出所有含数据的文件夹
                 file_data = self.radar_data_decoder.re_arrange_bit_file(target_file)
+                for item in file_data:
+                    file_data_list.append(item)
 
-        return file_data, goal_location_data
+        return file_data_list, goal_location_data
 
     def load_static_radar_data(self):
         input_data_list = []
@@ -73,8 +76,8 @@ class FeatureExtractor:
             file_data, goal_location_data = self.extract_feature_from_a_goal(data_path)
             print(str(index) + ' finish reading a origin file : ', data_path)
             for i in range(len(file_data)):
-                if i > 70:
-                    break
+                # if i > 70:
+                #     break
                 frame = file_data[i]
                 a_group_data = []  # 一组数据，0,1两列，第一列是信号强度，第二列是标注数据，位置数据
                 a_group_data.append(frame)

@@ -19,6 +19,7 @@ def reduce_data_length(data, start, end):
         out.append(item[start:end])
     return out
 
+
 def load_playground_data():
     if os.path.exists(PLAYGROUND_TRAIN_DATA_INPUT) and os.path.exists(PLAYGROUND_TRAIN_DATA_LABEL) and os.path.exists(
             PLAYGROUND_TEST_DATA_INPUT) and os.path.exists(PLAYGROUND_TEST_DATA_LABEL):
