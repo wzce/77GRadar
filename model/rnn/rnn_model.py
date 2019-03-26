@@ -91,7 +91,7 @@ class RadarRnn3(nn.Module):
 
 class RadarRnn4(nn.Module):
     def __init__(self, INPUT_SIZE):
-        super(RadarRnn2, self).__init__()
+        super(RadarRnn4, self).__init__()
 
         self.rnn = nn.RNN(
             input_size=INPUT_SIZE,
@@ -101,6 +101,27 @@ class RadarRnn4(nn.Module):
         )
 
         self.out = nn.Linear(32, 1)
+
+    def forward(self, x, h_state):
+        r_out, h_state = self.rnn(x, h_state)
+        outs = []
+        for time in range(r_out.size(1)):
+            outs.append(self.out(r_out[:, time, :]))
+        return torch.stack(outs, dim=1), h_state
+
+
+class RadarRnn5(nn.Module):
+    def __init__(self, INPUT_SIZE):
+        super(RadarRnn5, self).__init__()
+
+        self.rnn = nn.RNN(
+            input_size=INPUT_SIZE,
+            hidden_size=64,
+            num_layers=8,
+            batch_first=True
+        )
+
+        self.out = nn.Linear(64, 1)
 
     def forward(self, x, h_state):
         r_out, h_state = self.rnn(x, h_state)
