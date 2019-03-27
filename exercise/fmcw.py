@@ -3,35 +3,38 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy as sp
 from mpl_toolkits.mplot3d import Axes3D
+from pylab import mpl
 
 # parameters setting
-B = 135e6  # Sweep
-BandwidthT = 36.5e-6  # Sweep Time
-N = 512  # Sample Length
-L = 128  # Chirp Total
+B = 135e6  # Sweep Bandwidth
+T = 36.5e-6  # Sweep Time
+N = 64  # Sample Length
+L = 512  # Chirp Total
 c = 3e8  # Speed of Light
-f0 = 76.5e9  # Start Frequency
-NumRangeFFT = 512  # Range FFT Length
-NumDopplerFFT = 128  # Doppler FFT Length
-T = 50e-4
+f0 = 77.2e9  # Start Frequency
+NumRangeFFT = 64  # Range FFT Length
+NumDopplerFFT = 512  # Doppler FFT Length
 
 
 def generate_speed_and_distance_img_3d(frame_chunk, frame_index):
+    mpl.rcParams['font.sans-serif'] = ['FangSong']  # 指定默认字体
+    mpl.rcParams['axes.unicode_minus'] = False  # 解决保存图像是负号'-'显示为方块的问题
     X = []  # 距离
     Y = []  # 速度
     Z = []  # 亮度，代表点
     for row_index in range(0, len(frame_chunk)):
         for col_index in range(0, len(frame_chunk[row_index])):
-            X.append(col_index)
+            X.append(col_index-256)
             Y.append(row_index)
-            Z.append(frame_chunk[row_index][col_index] / 1000)
+            Z.append(frame_chunk[row_index][col_index])
     fig = plt.figure()
     # plt.clf()
     ax = fig.gca(projection='3d')
     ax.plot_trisurf(X, Y, Z, linewidth=0.2, antialiased=True)
-    ax.set_xlabel('Speed')
-    ax.set_ylabel('Distance')
-    ax.set_zlabel('Strength')
+    plt.yticks(ticks=[i for i in range(0,64,8)],label=['-1','-1','-1','-1','-1','-1','-1','-1'])
+    ax.set_xlabel('速度维')
+    ax.set_ylabel('距离维')
+    ax.set_zlabel('信号强度')
     # plt.savefig(IMG_SAVE_PATH + "speed_dis_" + str(frame_index) + ".png")
     plt.show()
 
@@ -40,8 +43,8 @@ rangeRes = c / 2 / B  # Range Resolution
 velRes = c / 2 / f0 / T / NumDopplerFFT  # Velocity Resolution
 maxRange = rangeRes * NumRangeFFT / 2  # Max Range
 maxVel = velRes * NumDopplerFFT / 2  # Max Velocity
-tarR = [50, 90]  # Target Range
-tarV = [3, 20]  # Target Velocity
+tarR = [10, 60]  # Target Range
+tarV = [3, 10]  # Target Velocity
 #  generate receive signal
 S1 = np.zeros((L, N), dtype=complex)
 for l in range(0, L):
@@ -58,21 +61,25 @@ for l in range(0, L):
                 2 * f0 * (tarR[1] + tarV[1] * T * l)) / c))
         sigReceive = S1 + S2
 
+# 对原始信号进行成像
+sig_receive = abs(sigReceive)
+sig_receive = np.transpose(sig_receive).tolist()
+generate_speed_and_distance_img_3d(sig_receive, 1)
 # range win processing
 sigRangeWin = np.zeros((L, N), dtype=complex)
 for l in range(0, L):
     sigRangeWin[l] = sp.multiply(sigReceive[l], sp.hamming(N).T)
-
-generate_speed_and_distance_img_3d(abs(sigRangeWin), 1)
 
 # range fft processing
 sigRangeFFT = np.zeros((L, N), dtype=complex)
 for l in range(0, L):
     sigRangeFFT[l] = np.fft.fft(sigRangeWin[l], NumRangeFFT)
 
-generate_speed_and_distance_img_3d(abs(sigRangeFFT), 1)
+first_fft = abs(sigRangeFFT)
+first_fft = np.transpose(first_fft).tolist()
+generate_speed_and_distance_img_3d(first_fft, 1)
 
-# doppler win processing
+# doppler win processing 加窗
 sigDopplerWin = np.zeros((L, N), dtype=complex)
 for n in range(0, N):
     sigDopplerWin[:, n] = sp.multiply(sigRangeFFT[:, n], sp.hamming(L).T)
@@ -86,4 +93,9 @@ for n in range(0, N):
 
 # print('sigDopplerFFT: ', sigDopplerFFT)
 # sigDopplerFFT = abs(sigDopplerFFT)
-generate_speed_and_distance_img_3d(abs(sigDopplerFFT), 3)
+second_fft = abs(sigDopplerFFT)
+zero = np.zeros(64)
+# second_fft[511] = zero
+
+second_fft = np.transpose(second_fft).tolist()
+generate_speed_and_distance_img_3d(second_fft, 3)

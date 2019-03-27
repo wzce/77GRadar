@@ -55,30 +55,11 @@ class Net(nn.Module):
 bce_loss = nn.BCEWithLogitsLoss()
 
 
-def random_index(start, end, exclude_list, l):
-    res = []
-    while len(res) < l:
-        rd = random.randint(start, end)
-        if (rd in exclude_list) or (rd in res):
-            continue
-        else:
-            res.append(rd)
-    return res
-
-
-def find_val_index(list, val):
-    res = []
-    for i in range(len(list)):
-        if list[i] == val:
-            res.append(i)
-    return res
-
-
 def loss_fn(predict, target):
     # t = target.data
     one_mask = torch.eq(target, 1).cuda(0)
     # one_mask[0] = 1
-    zero_mask = torch.randint(64, size=target.shape).cuda(0) > 58
+    zero_mask = torch.randint(64, size=target.shape).cuda(0) > 28
     mask = one_mask | zero_mask
     # m= mask.data.cpu().numpy().tolist()
     predict = torch.masked_select(predict.view(-1), mask.view(-1))

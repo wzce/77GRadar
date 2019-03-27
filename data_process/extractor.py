@@ -11,7 +11,7 @@ ORIGIN_DATA_DIR = "D:\home\zeewei\\20190324\\"
 
 PROCESSED_DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\data_process\pg_data_avg'
 # PROCESSED_TEST_DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\data\\test\\'
-INPUT_DATA_FILE_NAME = '2019_03-26_input_data.npy'
+INPUT_DATA_FILE_NAME = 'input_data_50.npy'
 # OUT_DATA_FILE_NAME = 'label.npy'
 
 # SHORT_LINE = 2  # 分道线，白色的条状，长2m
