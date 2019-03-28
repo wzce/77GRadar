@@ -4,7 +4,7 @@ import random
 import numpy as np
 import os
 
-DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\data_process\processed_data'
+DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\data_process\process_data_denoise_avg'
 
 PLAYGROUND_TRAIN_DATA_INPUT = os.path.join(DATA_DIR, 'pg_train_data_input.npy')
 PLAYGROUND_TRAIN_DATA_LABEL = os.path.join(DATA_DIR, 'pg_train_data_label.npy')
@@ -101,16 +101,16 @@ def load_pg_data_by_range(start=0, end=63):
         train_data_input.append(item[0])
         train_data_label.append(item[1])
 
-        test_data_input = []
-        test_data_label = []
-        for item in test_data:
-            test_data_input.append(item[0])
-            test_data_label.append(item[1])
+    test_data_input = []
+    test_data_label = []
+    for item in test_data:
+        test_data_input.append(item[0])
+        test_data_label.append(item[1])
 
-        np.save(pg_train_data_input_range, train_data_input)
-        np.save(pg_train_data_label_range, train_data_label)
-        np.save(pg_test_data_input_range, test_data_input)
-        np.save(pg_test_data_label_range, test_data_label)
+    np.save(pg_train_data_input_range, train_data_input)
+    np.save(pg_train_data_label_range, train_data_label)
+    np.save(pg_test_data_input_range, test_data_input)
+    np.save(pg_test_data_label_range, test_data_label)
     return train_data_input, train_data_label, test_data_input, test_data_label
 
 

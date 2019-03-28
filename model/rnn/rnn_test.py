@@ -10,6 +10,7 @@ SEQ_LEN = 64
 
 
 def model_test(model_path):
+    print('test')
     model = torch.load(model_path)
     # input_data, label_data = radar_data.load_pg_test_data()
     _, _1,input_data, label_data = radar_data.load_pg_data_by_range(0, SEQ_LEN)
@@ -47,7 +48,7 @@ def model_test(model_path):
         y = torch.ByteTensor(y).cuda(0)
         prediction, _ = model(x, None)
 
-        predict = torch.sigmoid(prediction) > 0.1
+        predict = torch.sigmoid(prediction) > 0.08
         max_predict_index = 0
         mm = 0
         for i in range(1, len(predict.view(-1))):
@@ -121,6 +122,6 @@ def model_test(model_path):
 
 
 if __name__ == '__main__':
-    model_location = 'D:\home\zeewei\projects\\77GRadar\model\\rnn\model_save_dir\\rnn4-32-8-28'
-    model_path = os.path.join(model_location, 'rnn_loss2_5220.pkl')
+    model_location = 'D:\home\zeewei\projects\\77GRadar\model\\rnn\model_save_dir\\rnn2-32-4-0'
+    model_path = os.path.join(model_location, 'rnn_loss2_9990_270.pkl')
     model_test(model_path)

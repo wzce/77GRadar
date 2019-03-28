@@ -1,0 +1,2 @@
+total: 14263  | correct_num: 0   | complete_correct_rate: 0.0    |right_location_rate:  0.6246231508097876  |zero_num: 376  |zero_num_rate:  0.026361915445558437
+total: 14263  | correct_num: 222 | complete_correct_rate: 0.0155 |right_location_rate:  0.7887541190492884  |zero_num: 153  |zero_num_rate:

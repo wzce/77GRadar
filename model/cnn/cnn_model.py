@@ -53,6 +53,57 @@ class RadarCnn1(nn.Module):
         return self.out(x)
 
 
+class RadarCnn1_2(nn.Module):
+    '''
+        三个卷积层加一个softmax，不使用池化和全连接
+        训练结果，total: 3114：
+        | correct_num: 1310
+        | complete_correct_rate: 0.4206807964033398
+        | relative_correct_num :  1547
+        | relative_correct_rate:  0.4967886962106615
+    '''
+
+    def __init__(self):
+        super(RadarCnn1_2, self).__init__()
+        self.conv1 = nn.Sequential(
+            nn.Conv1d(
+                in_channels=1,
+                out_channels=8,
+                kernel_size=3,
+                padding=1
+            ),
+            # nn.MaxPool1d(kernel_size=4)
+        )
+        self.conv2 = nn.Sequential(
+            nn.Conv1d(
+                in_channels=8,
+                out_channels=16,
+                kernel_size=3,
+                padding=1
+            ),
+            # nn.MaxPool1d(kernel_size=2)
+        )
+        self.conv3 = nn.Sequential(
+            nn.Conv1d(
+                in_channels=16,
+                out_channels=1,
+                kernel_size=3,
+                padding=1
+            ),
+            # nn.MaxPool1d(kernel_size=2)
+        )
+
+        self.out = nn.Linear(64, 64)  # 分类器，预测位置最大的一个
+        # self.fc = nn.Linear(960, 1)
+
+    def forward(self, input_data):
+        x = self.conv1(input_data)
+        x = self.conv2(x)
+        x = self.conv3(x)
+        x = x.view(x.size(0), -1)
+        return self.out(x)
+
+
 '''
    三个卷积层， 添加一个全连接层--->softmax
    卷积核大小为3
@@ -184,7 +235,7 @@ class RadarCnn4(nn.Module):
             nn.MaxPool1d(kernel_size=2),
 
         )
-        self.fc3 =  nn.Linear(62, 64)
+        self.fc3 = nn.Linear(62, 64)
         self.conv4 = nn.Sequential(
             nn.Conv1d(
                 in_channels=32,

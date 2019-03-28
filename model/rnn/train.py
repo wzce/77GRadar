@@ -10,7 +10,7 @@ pos_weight = torch.FloatTensor([1.6]).cuda(0)
 bce_loss = nn.BCEWithLogitsLoss(pos_weight=pos_weight)
 # bce_loss = nn.BCEWithLogitsLoss()
 SEQ_LEN = 64
-BATCH_SIZE = 2000
+BATCH_SIZE = 4000
 
 
 def loss_fn(predict, target, seq_len=SEQ_LEN):
@@ -47,7 +47,7 @@ def generate_batch(input_data, label_data, batch_size=BATCH_SIZE):
 
 
 def train_with_pg_data(model, model_save_dir, epochs=3000, save_line=0.7, learn_rate=LR, seq_len=SEQ_LEN):
-    train_data_input, train_data_label, test_data_input, test_data_label = radar_data.load_pg_data_by_range(0, 32)
+    train_data_input, train_data_label, test_data_input, test_data_label = radar_data.load_pg_data_by_range(0, 64)
     train_data_input = radar_data.reduce_data_length(train_data_input, 0, seq_len)
     train_data_label = radar_data.reduce_data_length(train_data_label, 0, seq_len)
     test_data_input = radar_data.reduce_data_length(test_data_input, 0, seq_len)
@@ -94,9 +94,9 @@ def train_with_pg_data(model, model_save_dir, epochs=3000, save_line=0.7, learn_
         test_loss = loss_fn(test_prediction, test_label_tensor)
         test_loss = test_loss.data.cpu().numpy()
 
-        if epoch % 20 == 0:
+        if epoch % 15 == 0:
             if test_loss < save_line:
-                torch.save(model, model_save_dir + 'rnn_loss2_' + str(epoch) + '.pkl')
+                torch.save(model, model_save_dir + 'rnn_loss2_9990_270_0_' + str(epoch) + '.pkl')
             if test_loss < min_loss:
                 min_loss = test_loss
             log = '{:0=4} \t train_loss:{} \t test_loss: {} \t test_min_loss: {} \t difference: {}'.format(
@@ -112,7 +112,9 @@ if __name__ == '__main__':
     # epochs = 10000
     # train_with_pg_data(model, cnn_model_dir, epochs=epochs, save_line=0.12, learn_rate=5e-4)
 
-    model = rnn_model.RadarRnn5(INPUT_SIZE=1).cuda(0)
-    cnn_model_dir = 'D:\home\zeewei\projects\\77GRadar\model\\rnn\model_save_dir\\rnn5-64-8-0\\'
+    # model = rnn_model.RadarRnn2(INPUT_SIZE=1).cuda(0)
+    model = torch.load(
+        "D:\home\zeewei\projects\\77GRadar\model\\rnn\model_save_dir\\rnn2-32-4-0\\rnn_loss2_9990_270_0.pkl")
+    cnn_model_dir = 'D:\home\zeewei\projects\\77GRadar\model\\rnn\model_save_dir\\rnn2-32-4-0\\'
     epochs = 10000
-    train_with_pg_data(model, cnn_model_dir, epochs=epochs, save_line=0.2, learn_rate=5e-5)
+    train_with_pg_data(model, cnn_model_dir, epochs=epochs, save_line=0.2, learn_rate=1e-6)
