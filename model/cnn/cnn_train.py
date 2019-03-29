@@ -33,6 +33,7 @@ def loss_fn(predict, target):
 
 
 def train(model, model_save_dir, epochs=1000, save_line=0.7, learn_rate=LR):
+
     train_data_input, train_data_label, test_data_input, test_data_label = radar_data.load_pg_data_by_range(0, 64)
 
     test_data_num = len(test_data_input)
@@ -63,19 +64,19 @@ def train(model, model_save_dir, epochs=1000, save_line=0.7, learn_rate=LR):
         test_loss = loss_fn(test_prediction, test_label_tensor)
         test_loss = test_loss.data.cpu().numpy()
 
-        if i % 10 == 0:
+        if i % 30 == 0:
             if test_loss < min_loss:
                 min_loss = test_loss
             if test_loss < save_line:
-                torch.save(model, model_save_dir + 'cnn_2990_' + str(i) + '.pkl')
+                torch.save(model, model_save_dir + 'cnn_0_' + str(i) + '.pkl')
             print('{:0=4} \t train_loss:{} \t test_loss: {} \t test_min_loss: {} \t difference: {}'
                   .format(i, loss_val, test_loss, min_loss, (test_loss - loss_val)))
     print('test_min_loss: ', min_loss)
 
 
 if __name__ == '__main__':
-    cnn_model_dir = 'D:\home\zeewei\projects\\77GRadar\model\cnn\model_dir\cnn1\\'
-    model = cnn_model.RadarCnn1_2().cuda(0)
-    model = torch.load("D:\home\zeewei\projects\\77GRadar\model\cnn\model_dir\cnn1\cnn_2990.pkl")
-    epochs = 3000
-    train(model, cnn_model_dir, epochs, 0.5, learn_rate=1e-3)
+    cnn_model_dir = 'D:\home\zeewei\projects\\77GRadar\model\cnn\model_data_all\cnn2_1_val\\'
+    # model = cnn_model.RadarCnn2_1().cuda(0)
+    model = torch.load("D:\home\zeewei\projects\\77GRadar\model\cnn\model_data_all\cnn2_1_val\cnn1350.pkl")
+    epochs = 10000
+    train(model, cnn_model_dir, epochs, 0.08, learn_rate=1e-3)

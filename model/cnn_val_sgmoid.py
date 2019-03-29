@@ -11,6 +11,8 @@ def model_test(model_path):
     # input_data, label_data = radar_data.load_pg_test_data()
     _, _1, input_data, label_data = radar_data.load_pg_data_by_range(0, 64)
 
+    # input_data, label_data = radar_data.load_val_data(
+    #     'D:\home\zeewei\projects\\77GRadar\data\\all\\all_val_data.npy')
     # L = len(input_data)
 
     correct_num = 0
@@ -40,7 +42,7 @@ def model_test(model_path):
         prediction = model(x)
         _, max = torch.max(prediction.data, 1)
 
-        predict = torch.sigmoid(prediction) > 0.25
+        predict = torch.sigmoid(prediction) > 0.1
 
         max_predict_index = 0
         mm = 0
@@ -78,8 +80,8 @@ def model_test(model_path):
             if t[max_y_index] == pd[max_y_index] or t[max_y_index] == pd[max_y_index - 1] \
                     or t[max_y_index] == pd[max_y_index + 1] \
                     or t[max_y_index] == pd[max_y_index - 1]:
-                    # or t[max_y_index] == pd[max_y_index + 2] \
-                    # or t[max_y_index] == pd[max_y_index - 2] \
+                # or t[max_y_index] == pd[max_y_index + 2] \
+                # or t[max_y_index] == pd[max_y_index - 2] \
 
                 print('relative right')
                 right_location_num = right_location_num + 1
@@ -115,6 +117,6 @@ def model_test(model_path):
 
 
 if __name__ == '__main__':
-    model_location = 'D:\home\zeewei\projects\\77GRadar\model\cnn\model_dir\cnn1'
-    model_path = os.path.join(model_location, 'cnn_2990_910.pkl')
+    model_location = 'D:\home\zeewei\projects\\77GRadar\model\cnn\model_data_all\cnn2_1_val'
+    model_path = os.path.join(model_location, 'cnn_0_2280.pkl')
     model_test(model_path)

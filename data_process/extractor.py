@@ -1,19 +1,20 @@
 import os, shutil
 import sys
 import numpy as np
+import random
 
 # from data_process import radar_data_decode
 from data_process import radar_data_decoder
 
-ORIGIN_DATA_DIR = "D:\home\zeewei\\20190319\\radar_data\\"
-# ORIGIN_DATA_DIR = "D:\home\zeewei\\20190324\\"
+# ORIGIN_DATA_DIR = "D:\home\zeewei\\20190319\\radar_data\\"
+ORIGIN_DATA_DIR = "D:\home\zeewei\\20190324\\"
 # ORIGIN_TEST_DATA_DIR = "D:\home\zeewei\\20190308\ml_backup\\test_data"
 
 PROCESSED_DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\data_process\pg_data_avg'
 # PROCESSED_TEST_DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\data\\test\\'
 INPUT_DATA_FILE_NAME2 = 'input_data_50.npy'
-INPUT_DATA_FILE_NAME = '2019_03_28_input_data_denoise_avg_10.npy'
-
+# INPUT_DATA_FILE_NAME = '2019_03_28_input_data_denoise_avg_10.npy'
+INPUT_DATA_FILE_NAME = '2019_03_24_input_data_all.npy'
 INPUT_DATA_ALL = 'input_data_all.npy'
 # OUT_DATA_FILE_NAME = 'label.npy'
 
@@ -28,9 +29,9 @@ class FeatureExtractor:
     def __init__(self, origin_data_dir=ORIGIN_DATA_DIR, processed_data_dir=PROCESSED_DATA_DIR,
                  input_data_file_name=INPUT_DATA_FILE_NAME):
         self.origin_data_dir = origin_data_dir
-        self.radar_data_decoder = radar_data_decoder.RadarDataDecoderDeNoiseAvg(avg_len=10)
+        self.radar_data_decoder = radar_data_decoder.RadarDataDecoder()
         self.processed_data_dir = processed_data_dir
-        self.input_data_file_name = INPUT_DATA_FILE_NAME
+        self.input_data_file_name = input_data_file_name
 
     def generate_goal_location_list(self, full_path, output_list_len=OUTPUT_LIST_LEN, gap=GAP):
         # print('full_path: ',full_path)
@@ -97,7 +98,7 @@ class FeatureExtractor:
     def load_data(self):
         process_file = os.path.join(self.processed_data_dir, self.input_data_file_name)
         if os.path.exists(process_file):
-            print('read from processed numpy file--->')
+            print('read from processed numpy file--->: ', process_file)
             data_list = np.load(process_file)
             # label_data_list = np.load(label_data_file)
         else:
@@ -108,13 +109,26 @@ class FeatureExtractor:
         return data_list
 
 
-if __name__ == '__main__':
-    extractor = FeatureExtractor()
+def relist_data():
+    extractor = FeatureExtractor(input_data_file_name='input_data_50.npy')
     input_data_list = extractor.load_data()
-    # list2 = extractor.load_data(INPUT_DATA_FILE_NAME2)
-    # for item in list2:
-    #     input_data_list.append(item)
-    #
-    # process_file_all = os.path.join(PROCESSED_DATA_DIR, INPUT_DATA_ALL)
-    # np.save(process_file_all, input_data_list)
-    print('input_data_list: ', len(input_data_list))
+    random.shuffle(input_data_list)  # 随机打乱
+    train_data_num = 9 * (int(len(input_data_list) / 10))
+    train_data = input_data_list[0:train_data_num]
+    val_data = input_data_list[train_data_num:]
+
+    process_file = os.path.join('D:\home\zeewei\projects\\77GRadar\data\\all',
+                                '2019_03_19_train_data.npy')
+    np.save(process_file, train_data)
+
+
+if __name__ == '__main__':
+    # relist_data()
+    list1 = np.load("D:\home\zeewei\projects\\77GRadar\data\\all\\2019_03_19_train_data.npy").tolist()
+    list2 = np.load("D:\home\zeewei\projects\\77GRadar\data\\all\\2019_03_24_train_data.npy")
+    for item in list2:
+        list1.append(item)
+
+    process_file_all = os.path.join("D:\home\zeewei\projects\\77GRadar\data\\all", "all_train_data.npy")
+    np.save(process_file_all, list1)
+    print('input_data_list: ', len(list1))
