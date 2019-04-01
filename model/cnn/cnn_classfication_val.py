@@ -40,6 +40,54 @@ class Net(nn.Module):
         return self.fc(x)
 
 
+class Net2(nn.Module):
+    def __init__(self):
+        super(Net2, self).__init__()
+        self.cv1 = nn.Conv1d(
+            in_channels=1,
+            out_channels=4,
+            kernel_size=5,
+            padding=1
+        )
+        self.pool1 = nn.MaxPool1d(kernel_size=2)
+
+        self.cv2 = nn.Conv1d(
+            in_channels=4,
+            out_channels=8,
+            kernel_size=5,
+            padding=1
+        )
+
+        self.pool2 = nn.MaxPool1d(kernel_size=2)
+
+        self.cv3 = nn.Conv1d(
+            in_channels=8,
+            out_channels=1,
+            kernel_size=6,
+            padding=1
+        )
+        # nn.MaxPool1d(kernel_size=4)
+
+        self.fc = nn.Linear(64, 2)
+
+    def forward(self, input_data):
+        x = self.cv1(input_data)
+        x= self.pool1(x)
+        x= self.cv2(x)
+        x=self.pool2(x)
+        x= self.cv3(x)
+        x = x.view(x.size(0), -1)
+        return self.fc(x)
+
+def train_test():
+    net = Net2()
+    optimizer = torch.optim.Adam(net.parameters(), lr=0.01)
+    x = np.zeros(64).tolist()
+    x=np.array(x).reshape(1, 1, 64)
+    x = torch.FloatTensor(x)
+    print(net)
+    prediction = net(x)
+
 def validate():
     model = torch.load(os.path.join(MODEL_SAVE_DIR, 'cnn_classification_3_12400_new.pkl'))
     # extractor = classification_data_extractor.ClassificationExtractor()  # 此处全使用默认的文件路径配置,获取有目标数据和无目标数据
@@ -65,4 +113,6 @@ def validate():
     print('accuracy: ', accuracy)
 
 
-validate()
+if __name__ == '__main__':
+    # validate()
+    train_test()

@@ -6,15 +6,19 @@ import random
 # from data_process import radar_data_decode
 from data_process import radar_data_decoder
 
-# ORIGIN_DATA_DIR = "D:\home\zeewei\\20190319\\radar_data\\"
-ORIGIN_DATA_DIR = "D:\home\zeewei\\20190324\\"
+ORIGIN_DATA_DIR = "D:\home\zeewei\\20190319\\val_data"
+# ORIGIN_DATA_DIR = "D:\home\zeewei\\20190324\\"
 # ORIGIN_TEST_DATA_DIR = "D:\home\zeewei\\20190308\ml_backup\\test_data"
 
-PROCESSED_DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\data_process\pg_data_avg'
+# PROCESSED_DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\data_process\pg_data_avg'
+PROCESSED_DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\\03_31_data'
 # PROCESSED_TEST_DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\data\\test\\'
 INPUT_DATA_FILE_NAME2 = 'input_data_50.npy'
 # INPUT_DATA_FILE_NAME = '2019_03_28_input_data_denoise_avg_10.npy'
-INPUT_DATA_FILE_NAME = '2019_03_24_input_data_all.npy'
+# INPUT_DATA_FILE_NAME = '2019_03_24_input_data_all.npy'
+
+INPUT_DATA_FILE_NAME = '2019_03_31_val_data_all.npy'
+
 INPUT_DATA_ALL = 'input_data_all.npy'
 # OUT_DATA_FILE_NAME = 'label.npy'
 
@@ -124,11 +128,6 @@ def relist_data():
 
 if __name__ == '__main__':
     # relist_data()
-    list1 = np.load("D:\home\zeewei\projects\\77GRadar\data\\all\\2019_03_19_train_data.npy").tolist()
-    list2 = np.load("D:\home\zeewei\projects\\77GRadar\data\\all\\2019_03_24_train_data.npy")
-    for item in list2:
-        list1.append(item)
-
-    process_file_all = os.path.join("D:\home\zeewei\projects\\77GRadar\data\\all", "all_train_data.npy")
-    np.save(process_file_all, list1)
-    print('input_data_list: ', len(list1))
+    e = FeatureExtractor()
+    list = e.load_data()
+    print('input_data_list: ', len(list))

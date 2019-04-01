@@ -42,7 +42,7 @@ def model_test(model_path):
         prediction = model(x)
         _, max = torch.max(prediction.data, 1)
 
-        predict = torch.sigmoid(prediction) > 0.1
+        predict = torch.sigmoid(prediction) > 0.015625
 
         max_predict_index = 0
         mm = 0
