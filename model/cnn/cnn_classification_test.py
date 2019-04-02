@@ -20,10 +20,14 @@ def validate(model, test_data, test_label):
 
     accuracy = sum(predict_y == target_y) / len(target_y)  # 预测中有多少和真实值一样
     print('accuracy: ', accuracy)
+    return accuracy
 
 
 if __name__ == '__main__':
     MODEL_SAVE_DIR = 'D:\home\zeewei\projects\\77GRadar\model\cnn\model_dir\model_classification'
     model = torch.load(os.path.join(MODEL_SAVE_DIR, 'cnn_2930.pkl'))
     train_data, train_label, test_data, test_label = empty_radar_data.load_playground_data()
+    # test_data = np.load("D:\home\zeewei\projects\\77GRadar\classification_train_data\pg_empty_val_data.numpy.npy")
+    # test_label = np.load("D:\home\zeewei\projects\\77GRadar\classification_train_data\pg_empty_val_label.numpy.npy")
+    print("数据量： ", len(test_data))
     validate(model, test_data, test_label)

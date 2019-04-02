@@ -3,6 +3,7 @@ from torch import nn
 import numpy as np
 from model.cnn import cnn_classification_model as cnn_model
 from data_process import empty_radar_data
+from model.cnn import cnn_classification_test as cnn_test
 
 MODEL_SAVE_DIR = 'D:\home\zeewei\projects\\77GRadar\model\cnn\model_dir\model_classification\\'
 
@@ -17,6 +18,9 @@ def train():
 
     train_data, train_label, test_data, test_label = empty_radar_data.load_playground_data()
 
+    t_d = test_data
+    t_l = test_label
+
     train_len = len(train_data)
     test_len = len(test_data)
     test_batch_num = test_len
@@ -28,7 +32,8 @@ def train():
     ep = []
     tr_loss = []
     te_loss = []
-    for epoch in range(10000):
+    ac = []  # 准确率
+    for epoch in range(3500):
         optimizer.zero_grad()
         x = np.array(train_data).reshape(train_len, 1, 64)
         x = torch.FloatTensor(x).cuda(0)
@@ -43,13 +48,15 @@ def train():
         test_loss = test_loss.data.cpu().numpy()
         train_loss = loss.data.cpu().numpy()
         if epoch % 10 == 0:
+            accuracy = cnn_test.validate(model, t_d, t_l)
             if test_loss < min_loss:
                 min_loss = test_loss
 
             if test_loss < 0.1:
                 torch.save(model, MODEL_SAVE_DIR + 'cnn_' + str(epoch) + '.pkl')
+
             print(epoch, ' train_mean_loss: ', train_loss,
-                  ' test_loss: ', test_loss, 'min_loss: ', min_loss)
+                  ' | test_loss: ', test_loss, ' | min_loss: ', min_loss, ' | accuracy: ', accuracy)
 
             pr = []
             ep.append(epoch)
@@ -58,6 +65,9 @@ def train():
             pr.append(ep)
             pr.append(tr_loss)
             pr.append(te_loss)
+
+            ac.append(accuracy)
+            pr.append(ac)
             np.save("D:\home\zeewei\projects\\77GRadar\model\cnn\model_dir\\classification_loss_rate.npy", pr)
 
     print('test_min_loss: ', min_loss)
