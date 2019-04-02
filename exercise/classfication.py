@@ -11,7 +11,7 @@ from sklearn import datasets
 #
 iris = datasets.load_iris()
 
-x = iris['data']
+x = iris['processed_data']
 x_train = x[0:130]
 x_test = x[130:150]
 y = iris['target']
@@ -89,7 +89,7 @@ def test():
     all_predict = net(x_test).data.numpy()
 
     '''
-        argmax(data,axis = 1)  axis = 1表示 按照行求最大值的索引
+        argmax(processed_data,axis = 1)  axis = 1表示 按照行求最大值的索引
     '''
     print((np.argmax(all_predict, axis=1) == iris['target']).sum() / len(y))
 

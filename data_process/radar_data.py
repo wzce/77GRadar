@@ -87,7 +87,7 @@ def load_pg_data_by_range(start=0, end=64):
     data_extractor = extractor.FeatureExtractor()  # 此处全使用默认的文件路径配置
     data_list = data_extractor.load_data()
     # print('划分数据集')
-    # data_list = np.load('D:\home\zeewei\projects\\77GRadar\data\\all\\all_train_data.npy')
+    # data_list = np.load('D:\home\zeewei\projects\\77GRadar\processed_data\\all\\all_train_data.npy')
     remain_list = []
     '''
         对数据进行范围过滤

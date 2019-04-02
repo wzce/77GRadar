@@ -65,7 +65,7 @@ def train():
         #     y = torch.FloatTensor(y).cuda(0)
         #     prediction = model(x)
         #     loss = loss_fn(prediction, y)
-        #     loss_sum = loss_sum + loss.data.cpu().numpy()
+        #     loss_sum = loss_sum + loss.processed_data.cpu().numpy()
         #     loss.backward()
         #     optimizer.step()
         # print('end --------------------->: ', step)

@@ -4,7 +4,7 @@ import numpy as np
 
 # from data_process import radar_data_decode
 from data_process import radar_data_decoder
-ORIGIN_TRAIN_DATA_DIR = "D:\home\zeewei\\20190308\ml_backup\\train_data"
+ORIGIN_TRAIN_DATA_DIR = "D:\home\zeewei\\20190308\ml_backup\\classification_train_data"
 ORIGIN_TEST_DATA_DIR = "D:\home\zeewei\\20190308\ml_backup\\test_data"
 
 PROCESSED_TRAIN_DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\data\\train\\'
@@ -106,17 +106,17 @@ class FeatureExtractor:
             input_data_list = np.load(input_data_file)
             label_data_list = np.load(label_data_file)
         else:
-            print('there is no processed data，read from origin file--->')
+            print('there is no processed processed_data，read from origin file--->')
             input_data_list, label_data_list = self.load_static_radar_data(origin_data_dir)
             np.save(input_data_file, input_data_list)
             np.save(label_data_file, label_data_list)
         return input_data_list, label_data_list
 
     def load_train_data(self):
-        print('start fetching train data--->')
+        print('start fetching train processed_data--->')
         input_data_list, label_data_list = self.load_data(TYPE_LOAD_TRAIN)
         return input_data_list, label_data_list
 
     def load_test_data(self):
-        print('start fetching test data--->')
+        print('start fetching test processed_data--->')
         return self.load_data(TYPE_LOAD_TEST)

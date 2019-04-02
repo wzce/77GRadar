@@ -6,25 +6,11 @@ import random
 # from data_process import radar_data_decode
 from data_process import radar_data_decoder
 
-ORIGIN_DATA_DIR = "D:\home\zeewei\\20190319\\val_data"
-# ORIGIN_DATA_DIR = "D:\home\zeewei\\20190324\\"
-# ORIGIN_TEST_DATA_DIR = "D:\home\zeewei\\20190308\ml_backup\\test_data"
+ORIGIN_DATA_DIR = "D:\home\zeewei\\20190319\\radar_data"
+PROCESSED_DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\\processed_data'
 
-# PROCESSED_DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\data_process\pg_data_avg'
-PROCESSED_DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\\03_31_data'
-# PROCESSED_TEST_DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\data\\test\\'
-INPUT_DATA_FILE_NAME2 = 'input_data_50.npy'
-# INPUT_DATA_FILE_NAME = '2019_03_28_input_data_denoise_avg_10.npy'
-# INPUT_DATA_FILE_NAME = '2019_03_24_input_data_all.npy'
+INPUT_DATA_FILE_NAME = 'all_two_lines_data.npy'  # 两条线路的全部训练数据
 
-INPUT_DATA_FILE_NAME = '2019_03_31_val_data_all.npy'
-
-INPUT_DATA_ALL = 'input_data_all.npy'
-# OUT_DATA_FILE_NAME = 'label.npy'
-
-# SHORT_LINE = 2  # 分道线，白色的条状，长2m
-# LONG_LINE = 4  # 分道线，白色的条状的间隔，长4m
-# ORIGIN_DIS = 1  # 雷达距离第一个白色线初始距离，此处为1m
 OUTPUT_LIST_LEN = 64
 GAP = 3  # 距离分辨率，3m
 
@@ -106,12 +92,39 @@ class FeatureExtractor:
             data_list = np.load(process_file)
             # label_data_list = np.load(label_data_file)
         else:
-            print('there is no processed data，read from origin file--->')
+            print('there is no processed processed_data，read from origin file--->')
             data_list = self.load_static_radar_data()
+            random.shuffle(data_list)
             np.save(process_file, data_list)
             # np.save(label_data_file, label_data_list)
         return data_list
 
+    def extract_feature_from_empty_goal(self):
+        file_lists = os.listdir(self.origin_data_dir)
+        file_data_list = []
+        for file in file_lists:
+            target_file = os.path.join(self.origin_data_dir, file)
+            if file[-4:] == '.dat':  # 找出所有含数据的文件夹
+                file_data = self.radar_data_decoder.re_arrange_bit_file(target_file)
+                for item in file_data:
+                    file_data_list.append(item)
+            print("finish read file: ", target_file)
+
+        return file_data_list
+
+    def load_empty_data(self):
+        process_file = os.path.join(self.processed_data_dir, self.input_data_file_name)
+        if os.path.exists(process_file):
+            print('read from processed numpy file--->: ', process_file)
+            data_list = np.load(process_file)
+            # label_data_list = np.load(label_data_file)
+        else:
+            print('there is no processed processed_data，read from origin file--->')
+            data_list = self.extract_feature_from_empty_goal()
+            random.shuffle(data_list)
+            np.save(process_file, data_list)
+            # np.save(label_data_file, label_data_list)
+        return data_list
 
 def relist_data():
     extractor = FeatureExtractor(input_data_file_name='input_data_50.npy')
@@ -127,7 +140,10 @@ def relist_data():
 
 
 if __name__ == '__main__':
+    empty_origin_data_dir = "D:\home\zeewei\\20190320\empty"
+    save_data_name = "pg_empty_goal_data.npy"
     # relist_data()
-    e = FeatureExtractor()
-    list = e.load_data()
+    e = FeatureExtractor(origin_data_dir=empty_origin_data_dir,
+                         input_data_file_name=save_data_name)
+    list = e.load_empty_data()
     print('input_data_list: ', len(list))

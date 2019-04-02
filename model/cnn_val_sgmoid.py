@@ -12,7 +12,7 @@ def model_test(model_path):
     _, _1, input_data, label_data = radar_data.load_pg_data_by_range(0, 64)
 
     # input_data, label_data = radar_data.load_val_data(
-    #     'D:\home\zeewei\projects\\77GRadar\data\\all\\all_val_data.npy')
+    #     'D:\home\zeewei\projects\\77GRadar\processed_data\\all\\all_val_data.npy')
     # L = len(input_data)
 
     correct_num = 0

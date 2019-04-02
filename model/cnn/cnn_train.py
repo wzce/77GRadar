@@ -23,8 +23,8 @@ def loss_fn(predict, target):
 #     # one_mask[0] = 1
 #     zero_mask = torch.randint(SEQ_LEN, size=target.shape).cuda(0) > 58
 #     mask = one_mask | zero_mask
-#     # print('     mask: ', mask.view(-1).data.cpu().numpy())
-#     # m= mask.data.cpu().numpy().tolist()
+#     # print('     mask: ', mask.view(-1).processed_data.cpu().numpy())
+#     # m= mask.processed_data.cpu().numpy().tolist()
 #     predict = torch.masked_select(predict, mask)
 #     target = torch.masked_select(target, mask)
 #

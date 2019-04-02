@@ -122,4 +122,4 @@ print('data_sca:', data_sca)
 
 right_distribute.distribute_cv(sca, data_sca, 64)
 right_distribute.distribute_cv(sca_r, data_sca, 64)
-# print('prediction: ', prediction.data.cpu().numpy().flatten())
+# print('prediction: ', prediction.processed_data.cpu().numpy().flatten())

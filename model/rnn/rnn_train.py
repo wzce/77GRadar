@@ -23,8 +23,8 @@ def loss_fn(predict, target, seq_len=SEQ_LEN):
     # one_mask[0] = 1
     zero_mask = torch.randint(seq_len, size=target.shape).cuda(0) > 28
     mask = one_mask | zero_mask
-    # print('     mask: ', mask.view(-1).data.cpu().numpy())
-    # m= mask.data.cpu().numpy().tolist()
+    # print('     mask: ', mask.view(-1).processed_data.cpu().numpy())
+    # m= mask.processed_data.cpu().numpy().tolist()
     predict = torch.masked_select(predict, mask)
     target = torch.masked_select(target, mask)
 
@@ -93,7 +93,7 @@ def train_with_pg_data(model, model_save_dir, epochs=3000, save_line=0.7, learn_
 
         loss_val = loss_val / (len(batch_data_label))
         test_prediction, _ = model(test_data_tensor, None)
-        # t_state = t_state.data
+        # t_state = t_state.processed_data
         test_loss = loss_fn(test_prediction, test_label_tensor)
         test_loss = test_loss.data.cpu().numpy()
 

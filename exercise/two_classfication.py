@@ -10,17 +10,17 @@ from sklearn import datasets
 
 # 假数据
 n_data = torch.ones(100, 2)  # 数据的基本形态
-x0 = torch.normal(2 * n_data, 1)  # 类型0 x data (tensor), shape=(100, 2)
-y0 = torch.zeros(100)  # 类型0 y data (tensor), shape=(100, 1)
-x1 = torch.normal(-2 * n_data, 1)  # 类型1 x data (tensor), shape=(100, 2)
-y1 = torch.ones(100)  # 类型1 y data (tensor), shape=(100, 1)
+x0 = torch.normal(2 * n_data, 1)  # 类型0 x processed_data (tensor), shape=(100, 2)
+y0 = torch.zeros(100)  # 类型0 y processed_data (tensor), shape=(100, 1)
+x1 = torch.normal(-2 * n_data, 1)  # 类型1 x processed_data (tensor), shape=(100, 2)
+y1 = torch.ones(100)  # 类型1 y processed_data (tensor), shape=(100, 1)
 
 # 注意 x, y 数据的数据形式是一定要像下面一样 (torch.cat 是在合并数据)
 x = torch.cat((x0, x1), 0).type(torch.FloatTensor)  # FloatTensor = 32-bit floating    Tensor[200,2]
 y = torch.cat((y0, y1), ).type(torch.LongTensor)  # LongTensor = 64-bit integer      Tensor[200]
 
 
-# plt.scatter(x.data.numpy()[:, 0], x.data.numpy()[:, 1], c=y.data.numpy())
+# plt.scatter(x.processed_data.numpy()[:, 0], x.processed_data.numpy()[:, 1], c=y.processed_data.numpy())
 # plt.show()
 
 # torch.cat(seq, dim=0, out=None)
