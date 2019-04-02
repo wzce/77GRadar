@@ -1,5 +1,5 @@
 *.iml
 .idea/
-*.kpl
+*.pkl
 */__pycache__/*
 model/bp/__pycache__/
