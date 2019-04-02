@@ -3,6 +3,7 @@ from data_process import radar_data
 import torch
 import numpy as np
 from torch import nn
+import random
 
 LR = 1e-4
 bce_with_logits_loss = nn.BCEWithLogitsLoss()
@@ -32,11 +33,27 @@ def loss_fn(predict, target):
 #     return loss
 
 
-def train(model, model_save_dir, epochs=1000, save_line=0.7, learn_rate=LR):
+def load_data(npy_data_path):
+    data_list = np.load(npy_data_path)
+    input = []
+    label = []
+    random.shuffle(data_list)
+    for item in data_list:
+        input.append(item[0])
+        label.append(item[1])
+    return input, label
 
+
+def train(model, model_save_dir, epochs=1000, save_line=0.7, learn_rate=LR):
     # train_data_input, train_data_label, test_data_input, test_data_label = radar_data.load_pg_data_by_range(0, 64)
-    _1, _, test_data_input, test_data_label = radar_data.rerange_road_data()
-    train_data_input, train_data_label = radar_data.load_pg_and_road_5000()
+    # _1, _, test_data_input, test_data_label = radar_data.rerange_road_data()
+    # train_data_input, train_data_label = radar_data.load_pg_and_road_5000()
+
+    test_data_input, test_data_label = load_data(
+        "D:\home\zeewei\projects\\77GRadar\\04_01_data\\2019_04_01_input_data_all.npy")
+    train_data_input, train_data_label = load_data(
+        "D:\home\zeewei\projects\\77GRadar\\04_01_data\\2019_04_01_test_label_all.npy")
+
     test_data_num = len(test_data_input)
     test_data_input = np.array(test_data_input).reshape(test_data_num, 1, 64)
     test_data_label = np.array(test_data_label).reshape(test_data_num, 1, 64)
@@ -69,14 +86,14 @@ def train(model, model_save_dir, epochs=1000, save_line=0.7, learn_rate=LR):
             if test_loss < min_loss:
                 min_loss = test_loss
             if test_loss < save_line:
-                torch.save(model, model_save_dir + 'cnn_0_' + str(i) + '.pkl')
+                torch.save(model, model_save_dir + 'cnn' + str(i) + '.pkl')
             print('{:0=4} \t train_loss:{} \t test_loss: {} \t test_min_loss: {} \t difference: {}'
                   .format(i, loss_val, test_loss, min_loss, (test_loss - loss_val)))
     print('test_min_loss: ', min_loss)
 
 
 if __name__ == '__main__':
-    cnn_model_dir = 'D:\home\zeewei\projects\\77GRadar\model\cnn\model_data_all\data_with_road_5000\\'
+    cnn_model_dir = 'D:\home\zeewei\projects\\77GRadar\model\cnn\model_data_all\cnn_one_of_train2\\'
     model = cnn_model.RadarCnn2_1().cuda(0)
     # model = torch.load("D:\home\zeewei\projects\\77GRadar\model\cnn\model_data_all\data_with_road_5000\cnn_0_220.pkl")
     epochs = 10000

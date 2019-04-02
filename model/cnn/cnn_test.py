@@ -4,21 +4,37 @@ import numpy as np
 from util.cv import right_distribute
 from data_process import radar_data
 import os
+import random
+
+
+def load_data(npy_data_path):
+    data_list = np.load(npy_data_path)
+    input = []
+    label = []
+    random.shuffle(data_list)
+    for item in data_list:
+        input.append(item[0])
+        label.append(item[1])
+    return input, label
 
 
 def model_test(model_path):
     model = torch.load(model_path)
     # input_data, label_data = radar_data.load_pg_test_data()
     # _, _1, input_data, label_data = radar_data.load_pg_data_by_range(0, 64)
-    _, _1, input_data, label_data = radar_data.rerange_road_data()
+
+    input_data, label_data, _, _ = radar_data.rerange_road_data()
+    # input_data, label_data = load_data(
+    #     "D:\home\zeewei\projects\\77GRadar\\04_01_data\\2019_04_01_test_label_all.npy")
+
     # L = len(input_data)
     # train_data_input, train_data_label = radar_data.load_pg_val_data()
     correct_num = 0
     relative_correct_num = 0
     total_num = len(input_data)
-    sca = np.zeros(64)
-    sca_r = np.zeros(64)
-    data_sca = np.zeros(64)
+    sca = [0 for i in range(64)]
+    sca_r = [0 for i in range(64)]
+    data_sca = [0 for i in range(64)]
     right_location_num = 0
     for step in range(len(input_data)):
         print('\n<----------------------------------------------------------', step)
@@ -84,9 +100,9 @@ def model_test(model_path):
         if max_y_index >= 2 and max_y_index <= 62:
             if t[max_y_index] == pd[max_y_index] or t[max_y_index] == pd[max_y_index - 1] \
                     or t[max_y_index] == pd[max_y_index + 1] \
-                    or t[max_y_index] == pd[max_y_index - 1] :
-                    # or t[max_y_index] == pd[max_y_index + 2] \
-                    # or t[max_y_index] == pd[max_y_index - 2]:
+                    or t[max_y_index] == pd[max_y_index - 1]:
+                # or t[max_y_index] == pd[max_y_index + 2] \
+                # or t[max_y_index] == pd[max_y_index - 2]:
                 print('relative right')
                 right_location_num = right_location_num + 1
                 sca_r[max_y_index] = sca_r[max_y_index] + 1
@@ -119,6 +135,6 @@ def model_test(model_path):
 
 
 if __name__ == '__main__':
-    model_location = 'D:\home\zeewei\projects\\77GRadar\model\cnn\model_data_all\data_with_road_5000'
-    model_path = os.path.join(model_location, 'cnn_0_2540.pkl')
+    model_location = 'D:\home\zeewei\projects\\77GRadar\model\cnn\model_data_all\cnn_one_of_train1'
+    model_path = os.path.join(model_location, 'cnn480.pkl')
     model_test(model_path)
