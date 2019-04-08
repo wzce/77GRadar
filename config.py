@@ -1,18 +1,26 @@
 from configparser import ConfigParser
+import os, sys
+import platform
 
 
-def load_config(config_name, config_item):
+def load_config(index):
+    sys_str = platform.system()
+    if (sys_str == "Windows"):
+        current_path = 'D:\home\zeewei\projects\\77GRadar'
+    else:
+        current_path = '/home/wzce/projects/77GRadar'
+
+    config_path = os.path.join(current_path, "radar_data.cfg")
+    print("abs path: ", current_path)
     # 初始化类
     cp = ConfigParser()
-    cp.read("radar_data.cfg")
-    print('cp.sections(): ', cp.sections())
-    # 得到所有的section，以列表的形式返回
+    cp.read(config_path)
     sections = cp.sections()
-    section = sections[0]
+    section = sections[index]
     # 得到该section中的option的值，返回为string类型
-    return cp.get(section, config_item)
+    return cp, section
 
 
 if __name__ == '__main__':
-    dir = load_config('data_line1_windows', 'origin_data_dir')
+    dir = load_config(0)
     print('dir: ', dir)

@@ -2,29 +2,24 @@ import os, shutil
 import sys
 import numpy as np
 import random
+from configparser import ConfigParser
 
 # from data_process import radar_data_decode
 from data_process import radar_data_decoder
-
-ORIGIN_DATA_DIR = "D:\home\zeewei\\20190319\\radar_data"
-PROCESSED_DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\\processed_data'
-
-INPUT_DATA_FILE_NAME = 'all_two_lines_data_0406_4avg.npy'  # 两条线路的全部训练数据
+import config
 
 OUTPUT_LIST_LEN = 64
 GAP = 3  # 距离分辨率，3m
 
 
 class FeatureExtractor:
-    def __init__(self, origin_data_dir=ORIGIN_DATA_DIR, processed_data_dir=PROCESSED_DATA_DIR,
-                 input_data_file_name=INPUT_DATA_FILE_NAME):
+    def __init__(self, origin_data_dir, processed_data_dir, input_data_file_name):
         self.origin_data_dir = origin_data_dir
         self.radar_data_decoder = radar_data_decoder.RadarDataDecoder()
         self.processed_data_dir = processed_data_dir
         self.input_data_file_name = input_data_file_name
 
     def generate_goal_location_list(self, full_path, output_list_len=OUTPUT_LIST_LEN, gap=GAP):
-        # print('full_path: ',full_path)
         '''
                 生成目标所在的位置（1-64 中的位置）
         '''
@@ -40,8 +35,6 @@ class FeatureExtractor:
             index = (int)(val / gap)
             result[index] = 1
         return result
-
-    # def generate_goal_location_list(self, distance_list, output_list_len=OUTPUT_LIST_LEN, gap=GAP):
 
     '''
         读取一组数据中的目标位置和信号强度
@@ -117,39 +110,20 @@ class FeatureExtractor:
         if os.path.exists(process_file):
             print('read from processed numpy file--->: ', process_file)
             data_list = np.load(process_file)
-            # label_data_list = np.load(label_data_file)
         else:
             print('there is no processed processed_data，read from origin file--->')
             data_list = self.extract_feature_from_empty_goal()
             random.shuffle(data_list)
             np.save(process_file, data_list)
-            # np.save(label_data_file, label_data_list)
         return data_list
-
-def relist_data():
-    extractor = FeatureExtractor(input_data_file_name='input_data_50.npy')
-    input_data_list = extractor.load_data()
-    random.shuffle(input_data_list)  # 随机打乱
-    train_data_num = 9 * (int(len(input_data_list) / 10))
-    train_data = input_data_list[0:train_data_num]
-    val_data = input_data_list[train_data_num:]
-
-    process_file = os.path.join('D:\home\zeewei\projects\\77GRadar\data\\all',
-                                '2019_03_19_train_data.npy')
-    np.save(process_file, train_data)
 
 
 if __name__ == '__main__':
-    empty_origin_data_dir = "D:\home\zeewei\\20190319\\line1_val"
-    save_data_name = "one_line_val_0406.npy"
-    # relist_data()
+    cp, section = config.load_config(2)
 
-    # e = FeatureExtractor()
-    # list = e.load_data()
-
-    e = FeatureExtractor(origin_data_dir=empty_origin_data_dir,
-                         input_data_file_name=save_data_name)
+    e = FeatureExtractor(cp.get(section, 'origin_data_dir'),
+                         cp.get(section, 'processed_data_dir'),
+                         cp.get(section, 'train_data_file_name'))
 
     list = e.load_data()
-
     print('input_data_list: ', len(list))
