@@ -1,3 +1,6 @@
+import sys
+sys.path.append('../')  #
+
 import os, shutil
 import sys
 import numpy as np
