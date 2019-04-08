@@ -122,7 +122,7 @@ class FeatureExtractor:
 
 
 if __name__ == '__main__':
-    cp, section = config.load_config(2)
+    cp, section = config.load_config(3)
 
     e = FeatureExtractor(cp.get(section, 'origin_data_dir'),
                          cp.get(section, 'processed_data_dir'),
