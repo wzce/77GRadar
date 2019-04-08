@@ -1,6 +1,9 @@
 import torch
 from torch import nn
 
+import sys
+
+sys.path.append('../')  #
 
 class RadarRnn1(nn.Module):
     def __init__(self, INPUT_SIZE):
