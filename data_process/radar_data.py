@@ -42,7 +42,8 @@ def load_playground_data():
         # data_extractor = extractor.FeatureExtractor()  # 此处全使用默认的文件路径配置
         # data_list = data_extractor.load_data()
         print('划分数据集')
-        data_list = np.load('D:\home\zeewei\projects\\77GRadar\processed_data\\one_line_train_0406.npy')
+        # data_list = np.load('D:\home\zeewei\projects\\77GRadar\processed_data\\one_line_train_0406.npy')
+        data_list = np.load(processed_train_data)
         random.shuffle(data_list)  # 随机打乱
         train_num = int(7 * len(data_list) / 10)  # 训练集与测试集7:3比例
         train_data = data_list[0:train_num]
@@ -73,8 +74,7 @@ def load_pg_test_data():
     return test_data_input, test_data_label
 
 
-def load_val_data(
-        data_path="D:\home\zeewei\projects\\77GRadar\processed_data\\one_line_val_0406.npy"):
+def load_val_data(data_path=processed_val_data):
     val_data = np.load(data_path)
     random.shuffle(val_data)
     val_data_input = []
