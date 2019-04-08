@@ -127,6 +127,7 @@ def train_with_pg_data(model, model_save_dir, epochs=3000, save_line=0.7, learn_
             ep.append(epoch)
             tr_loss.append(loss_val)
             te_loss.append(test_loss)
+
             pr.append(ep)
             pr.append(tr_loss)
             pr.append(te_loss)
