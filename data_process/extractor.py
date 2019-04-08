@@ -9,7 +9,7 @@ from data_process import radar_data_decoder
 ORIGIN_DATA_DIR = "D:\home\zeewei\\20190319\\radar_data"
 PROCESSED_DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\\processed_data'
 
-INPUT_DATA_FILE_NAME = 'all_two_lines_data.npy'  # 两条线路的全部训练数据
+INPUT_DATA_FILE_NAME = 'all_two_lines_data_0406_4avg.npy'  # 两条线路的全部训练数据
 
 OUTPUT_LIST_LEN = 64
 GAP = 3  # 距离分辨率，3m
@@ -140,10 +140,16 @@ def relist_data():
 
 
 if __name__ == '__main__':
-    empty_origin_data_dir = "D:\home\zeewei\\20190320\empty"
-    save_data_name = "pg_empty_goal_data.npy"
+    empty_origin_data_dir = "D:\home\zeewei\\20190319\\line1_val"
+    save_data_name = "one_line_val_0406.npy"
     # relist_data()
+
+    # e = FeatureExtractor()
+    # list = e.load_data()
+
     e = FeatureExtractor(origin_data_dir=empty_origin_data_dir,
                          input_data_file_name=save_data_name)
-    list = e.load_empty_data()
+
+    list = e.load_data()
+
     print('input_data_list: ', len(list))

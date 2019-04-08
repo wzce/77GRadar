@@ -3,6 +3,7 @@ from data_process import radar_data
 import torch
 import numpy as np
 from torch import nn
+from model.cnn import cnn_test
 
 LR = 1e-4
 bce_with_logits_loss = nn.BCEWithLogitsLoss()
@@ -33,10 +34,14 @@ def loss_fn(predict, target):
 
 
 def train(model, model_save_dir, epochs=1000, save_line=0.7, learn_rate=LR):
-
     # train_data_input, train_data_label, test_data_input, test_data_label = radar_data.load_pg_data_by_range(0, 64)
-    _1, _, test_data_input, test_data_label = radar_data.rerange_road_data()
-    train_data_input, train_data_label = radar_data.load_pg_and_road_5000()
+    # _1, _, test_data_input, test_data_label = radar_data.rerange_road_data()
+    # train_data_input, train_data_label = radar_data.load_pg_and_road_5000()
+
+    train_data_input, train_data_label, test_data_input, test_data_label = radar_data.load_playground_data()
+    # test_data_input, test_data_label = radar_data.load_val_data()
+    td = test_data_input
+    tl = test_data_label
     test_data_num = len(test_data_input)
     test_data_input = np.array(test_data_input).reshape(test_data_num, 1, 64)
     test_data_label = np.array(test_data_label).reshape(test_data_num, 1, 64)
@@ -53,7 +58,20 @@ def train(model, model_save_dir, epochs=1000, save_line=0.7, learn_rate=LR):
 
     optimizer = torch.optim.Adam(model.parameters(), lr=learn_rate)
 
-    for i in range(epochs):
+    ep = []
+    tr_loss = []
+    te_loss = []
+    st1_ac = []  # 准确率
+    st2_ac = []
+    st3_ac = []
+    # pr = np.load("D:\home\zeewei\projects\\77GRadar\model\cnn\model_dir\\train_cnn2_1.npy")
+
+    # ep = pr[0].tolist()
+    # tr_loss = pr[1].tolist()
+    # te_loss = pr[2].tolist()
+    # c_ac = pr[3].tolist()  # 准确率
+    # r_ac = pr[4].tolist()
+    for epoch in range(epochs):
         optimizer.zero_grad()
         prediction = model(train_data_tensor)
         loss = loss_fn(prediction, train_label_tensor)
@@ -65,19 +83,41 @@ def train(model, model_save_dir, epochs=1000, save_line=0.7, learn_rate=LR):
         test_loss = loss_fn(test_prediction, test_label_tensor)
         test_loss = test_loss.data.cpu().numpy()
 
-        if i % 20 == 0:
+        if epoch % 15 == 0:
+
+            st1, st2, st3 = cnn_test.model_test(model, td, tl, line=0.15)
+
             if test_loss < min_loss:
                 min_loss = test_loss
             if test_loss < save_line:
-                torch.save(model, model_save_dir + 'cnn_0_' + str(i) + '.pkl')
-            print('{:0=4} \t train_loss:{} \t test_loss: {} \t test_min_loss: {} \t difference: {}'
-                  .format(i, loss_val, test_loss, min_loss, (test_loss - loss_val)))
+                torch.save(model, model_save_dir + 'cnn_' + str(epoch) + '.pkl')
+            print(
+                '{:0=4} \t train_loss:{} \t test_loss: {} \t test_min_loss: {} \t difference: {} \t st1_acc:{} \t st2_acc:{} \t st3_acc:{}'
+                    .format(epoch, loss_val, test_loss, min_loss, (test_loss - loss_val), st1, st2, st3))
+
+            pr = []
+            ep.append(epoch)
+            tr_loss.append(loss_val)
+            te_loss.append(test_loss)
+            pr.append(ep)
+            pr.append(tr_loss)
+            pr.append(te_loss)
+
+            st1_ac.append(st1)
+            st2_ac.append(st2)
+            st3_ac.append(st3)
+
+            pr.append(st1_ac)
+            pr.append(st2_ac)
+            pr.append(st3_ac)
+            np.save("D:\home\zeewei\projects\\77GRadar\model\cnn\model_dir\\train_cnn1_1_0406.npy", pr)
+
     print('test_min_loss: ', min_loss)
 
 
 if __name__ == '__main__':
-    cnn_model_dir = 'D:\home\zeewei\projects\\77GRadar\model\cnn\model_data_all\data_with_road_5000\\'
-    model = cnn_model.RadarCnn2_1().cuda(0)
-    # model = torch.load("D:\home\zeewei\projects\\77GRadar\model\cnn\model_data_all\data_with_road_5000\cnn_0_220.pkl")
-    epochs = 10000
-    train(model, cnn_model_dir, epochs, 0.2, learn_rate=1e-3)
+    cnn_model_dir = 'D:\home\zeewei\projects\\77GRadar\model\cnn\model_dir\cnn1_1_0406\\'
+    model = cnn_model.RadarCnn1_1 ().cuda(0)
+    # model = torch.load("D:\home\zeewei\projects\\77GRadar\model\cnn\model_dir\cnn2_1\cnn9990.pkl")
+    epochs = 5000
+    train(model, cnn_model_dir, epochs, 0.05, learn_rate=1e-3)

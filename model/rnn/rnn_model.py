@@ -35,7 +35,8 @@ class RadarRnn2(nn.Module):
             input_size=INPUT_SIZE,
             hidden_size=32,
             num_layers=4,
-            batch_first=True
+            batch_first=True,
+            # bidirectional=True
         )
 
         self.out = nn.Linear(32, 1)

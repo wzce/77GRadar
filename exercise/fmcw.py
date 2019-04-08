@@ -16,7 +16,7 @@ NumRangeFFT = 64  # Range FFT Length
 NumDopplerFFT = 512  # Doppler FFT Length
 
 
-def generate_speed_and_distance_img_3d(frame_chunk, frame_index):
+def generate_speed_and_distance_img_3d(frame_chunk, frame_index, fiel_name):
     mpl.rcParams['font.sans-serif'] = ['FangSong']  # 指定默认字体
     mpl.rcParams['axes.unicode_minus'] = False  # 解决保存图像是负号'-'显示为方块的问题
     X = []  # 距离
@@ -35,8 +35,8 @@ def generate_speed_and_distance_img_3d(frame_chunk, frame_index):
     ax.set_xlabel('速度维')
     ax.set_ylabel('距离维')
     ax.set_zlabel('信号强度')
-    # plt.savefig(IMG_SAVE_PATH + "speed_dis_" + str(frame_index) + ".png")
-    plt.show()
+    plt.savefig("C:\\Users\\zt\\Desktop\\2d_FFT\\" + fiel_name + "_" + str(frame_index) + ".pdf")
+    # plt.show()
 
 
 def re_list_data(frame_chunk):
@@ -60,7 +60,7 @@ velRes = c / 2 / f0 / T / NumDopplerFFT  # Velocity Resolution
 maxRange = rangeRes * NumRangeFFT / 2  # Max Range
 maxVel = velRes * NumDopplerFFT / 2  # Max Velocity
 tarR = [10, 60]  # Target Range
-tarV = [-3, 10]  # Target Velocity
+tarV = [0, 10]  # Target Velocity
 #  generate receive signal
 S1 = np.zeros((L, N), dtype=complex)
 for l in range(0, L):
@@ -80,7 +80,7 @@ for l in range(0, L):
 # 对原始信号进行成像
 sig_receive = abs(sigReceive)
 sig_receive = np.transpose(sig_receive).tolist()
-# generate_speed_and_distance_img_3d(sig_receive, 1)
+generate_speed_and_distance_img_3d(sig_receive, 1, "none_fft")
 # range win processing
 sigRangeWin = np.zeros((L, N), dtype=complex)
 for l in range(0, L):
@@ -94,7 +94,7 @@ for l in range(0, L):
 first_fft = abs(sigRangeFFT)
 first_fft = np.transpose(first_fft).tolist()
 first_fft = re_list_data(first_fft)
-# generate_speed_and_distance_img_3d(first_fft, 1)
+generate_speed_and_distance_img_3d(first_fft, 2, "one_fft")
 
 # doppler win processing 加窗
 sigDopplerWin = np.zeros((L, N), dtype=complex)
@@ -117,4 +117,4 @@ zero = np.zeros(64)
 
 second_fft = re_list_data(second_fft)
 second_fft = np.transpose(second_fft).tolist()
-generate_speed_and_distance_img_3d(second_fft, 3)
+generate_speed_and_distance_img_3d(second_fft, 3, "two_fft")

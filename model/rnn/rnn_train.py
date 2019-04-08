@@ -4,6 +4,7 @@ from torch import nn
 
 from data_process import radar_data
 from model.rnn import rnn_model
+from model.rnn import rnn_test
 
 LR = 1e-4
 pos_weight = torch.FloatTensor([1.6]).cuda(0)
@@ -47,7 +48,11 @@ def generate_batch(input_data, label_data, batch_size=BATCH_SIZE):
 
 
 def train_with_pg_data(model, model_save_dir, epochs=3000, save_line=0.7, learn_rate=LR, seq_len=SEQ_LEN):
-    train_data_input, train_data_label, test_data_input, test_data_label = radar_data.load_pg_data_by_range(0, 64)
+    # train_data_input, train_data_label, test_data_input, test_data_label = radar_data.load_pg_data_by_range(0, 64)
+    train_data_input, train_data_label, test_data_input, test_data_label = radar_data.load_playground_data()
+    td = test_data_input
+    tl = test_data_label
+
     train_data_input = radar_data.reduce_data_length(train_data_input, 0, seq_len)
     train_data_label = radar_data.reduce_data_length(train_data_label, 0, seq_len)
     test_data_input = radar_data.reduce_data_length(test_data_input, 0, seq_len)
@@ -73,9 +78,14 @@ def train_with_pg_data(model, model_save_dir, epochs=3000, save_line=0.7, learn_
     h_state = None  # 第一次的时候，暂存为0
     t_state = None
     # f = open("log.txt", "w")
+
     ep = []
-    te_loss = []
     tr_loss = []
+    te_loss = []
+    st1_ac = []  # 准确率
+    st2_ac = []
+    st3_ac = []
+
     for epoch in range(epochs):
         loss_val = 0
         for i in range(len(batch_data_input)):
@@ -97,23 +107,36 @@ def train_with_pg_data(model, model_save_dir, epochs=3000, save_line=0.7, learn_
         test_loss = loss_fn(test_prediction, test_label_tensor)
         test_loss = test_loss.data.cpu().numpy()
 
-        if epoch % 5 == 0:
-            if test_loss < save_line:
-                torch.save(model, model_save_dir + 'rnn_loss2_9990_270_0_' + str(epoch) + '.pkl')
+        if epoch % 25 == 0:
+
+            st1, st2, st3 = rnn_test.model_test(model, td, tl, line=0.1)
+
             if test_loss < min_loss:
                 min_loss = test_loss
-            log = '{:0=4} \t train_loss:{} \t test_loss: {} \t test_min_loss: {} \t difference: {}'.format(
-                epoch, loss_val, test_loss, min_loss, (test_loss - loss_val))
+            if test_loss < save_line:
+                torch.save(model, model_save_dir + 'rnn_' + str(epoch) + '.pkl')
+            print(
+                '{:0=4} \t train_loss:{} \t test_loss: {} \t test_min_loss: {} \t difference: {} \t st1_acc:{} \t st2_acc:{} \t st3_acc:{}'
+                    .format(epoch, loss_val, test_loss, min_loss, (test_loss - loss_val), st1, st2, st3))
 
+            pr = []
             ep.append(epoch)
             tr_loss.append(loss_val)
             te_loss.append(test_loss)
-            d = []
-            d.append(ep)
-            d.append(tr_loss)
-            d.append(te_loss)
-            np.save('D:\home\zeewei\projects\\77GRadar\model\\rnn\\train_parameter.npy', d)
-            print(log)
+            pr.append(ep)
+            pr.append(tr_loss)
+            pr.append(te_loss)
+
+            st1_ac.append(st1)
+            st2_ac.append(st2)
+            st3_ac.append(st3)
+
+            pr.append(st1_ac)
+            pr.append(st2_ac)
+            pr.append(st3_ac)
+
+            np.save('D:\home\zeewei\projects\\77GRadar\model\\rnn\\train_process_0407_1.npy', pr)
+            # print(log)
             # print(log, file=f)
     print('test_min_loss: ', min_loss)
 
@@ -127,6 +150,6 @@ if __name__ == '__main__':
     model = rnn_model.RadarRnn2(INPUT_SIZE=1).cuda(0)
     # model = torch.load(
         # "D:\home\zeewei\projects\\77GRadar\model\\rnn\model_save_dir\\rnn2-32-4-0\\rnn_loss2_9990_270_0.pkl")
-    cnn_model_dir = 'D:\home\zeewei\projects\\77GRadar\model\\rnn\model_save_dir\\rnn2-32-4-0\\'
-    epochs = 1000
-    train_with_pg_data(model, cnn_model_dir, epochs=epochs, save_line=0.2, learn_rate=1e-3)
+    cnn_model_dir = 'D:\home\zeewei\projects\\77GRadar\model\\rnn\model_save_dir\\rnn2_0407_1\\'
+    epochs = 10000
+    train_with_pg_data(model, cnn_model_dir, epochs=epochs, save_line=0.8, learn_rate=1e-3)

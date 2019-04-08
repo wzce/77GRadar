@@ -7,7 +7,7 @@ import os
 # DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\data_process\process_data_denoise_avg'
 # DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\data_process\processed_data'
 # DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\data_process\processed_two_days_all'
-DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\\03_31_data'
+DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\processed_data\\train_val_data_0407'
 
 PLAYGROUND_TRAIN_DATA_INPUT = os.path.join(DATA_DIR, 'pg_train_data_input.npy')
 PLAYGROUND_TRAIN_DATA_LABEL = os.path.join(DATA_DIR, 'pg_train_data_label.npy')
@@ -34,7 +34,7 @@ def load_playground_data():
         # data_extractor = extractor.FeatureExtractor()  # 此处全使用默认的文件路径配置
         # data_list = data_extractor.load_data()
         print('划分数据集')
-        data_list = np.load('D:\home\zeewei\projects\\77GRadar\data\\all\\all_train_data.npy')
+        data_list = np.load('D:\home\zeewei\projects\\77GRadar\processed_data\\one_line_train_0406.npy')
         random.shuffle(data_list)  # 随机打乱
         train_num = int(7 * len(data_list) / 10)  # 训练集与测试集7:3比例
         train_data = data_list[0:train_num]
@@ -153,21 +153,13 @@ def load_all_data():
     return data_list
 
 
-def load_val_data(data_path):
+def load_val_data(
+        data_path="D:\home\zeewei\projects\\77GRadar\processed_data\\one_line_val_0406.npy"):
     val_data = np.load(data_path)
+    random.shuffle(val_data)
     val_data_input = []
     val_data_label = []
     for item in val_data:
-        val_data_input.append(item[0])
-        val_data_label.append(item[1])
-    return val_data_input, val_data_label
-
-
-def load_pg_val_data():
-    train_data = np.load('D:\home\zeewei\projects\\77GRadar\\03_31_data\\2019_03_31_val_data_all.npy')
-    val_data_input = []
-    val_data_label = []
-    for item in train_data:
         val_data_input.append(item[0])
         val_data_label.append(item[1])
     return val_data_input, val_data_label
@@ -179,9 +171,9 @@ def load_pg_and_road_5000():
 
     return road_train_data_input, road_train_data_label
 
-#临时用的
-def rerange_road_data():
 
+# 临时用的
+def rerange_road_data():
     if os.path.exists("D:\home\zeewei\projects\\77GRadar\\03_31_data\\road_train_input.npy"):
         train_data_input = np.load("D:\home\zeewei\projects\\77GRadar\\03_31_data\\road_train_input.npy")
         train_data_label = np.load("D:\home\zeewei\projects\\77GRadar\\03_31_data\\road_train_label.npy")
@@ -225,7 +217,6 @@ def rerange_road_data():
     np.save("D:\home\zeewei\projects\\77GRadar\\03_31_data\\road_test_input.npy", test_data_input)
     np.save("D:\home\zeewei\projects\\77GRadar\\03_31_data\\road_test_label.npy", test_data_label)
     return train_data_input, train_data_label, test_data_input, test_data_label
-
 
 
 if __name__ == '__main__':

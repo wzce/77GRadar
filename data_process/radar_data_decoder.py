@@ -69,7 +69,11 @@ class RadarDataDecoder:
                 new_frame_chunk.append(d)
 
             frame_chunk = new_frame_chunk
+            # static_goal = frame_chunk[254:258]  # 取相对静止的四组值
+            # mean_col = np.mean(static_goal, axis=0)  # 取均值
+
             zero_speed_data.append(frame_chunk[256])
+
         return zero_speed_data
 
 

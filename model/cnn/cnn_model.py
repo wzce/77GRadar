@@ -53,7 +53,7 @@ class RadarCnn1(nn.Module):
         return self.out(x)
 
 
-class RadarCnn1_2(nn.Module):
+class RadarCnn1_1(nn.Module):
     '''
         三个卷积层加一个全连接层，不使用池化和全连接
         训练结果，total: 3114：
@@ -64,7 +64,7 @@ class RadarCnn1_2(nn.Module):
     '''
 
     def __init__(self):
-        super(RadarCnn1_2, self).__init__()
+        super(RadarCnn1_1, self).__init__()
         self.conv1 = nn.Sequential(
             nn.Conv1d(
                 in_channels=1,
@@ -154,9 +154,9 @@ class RadarCnn2(nn.Module):
         return self.out(x)
 
 
-class RadarCnn2_1(nn.Module):
+class Radar_Cnn_2_1(nn.Module):
     def __init__(self):
-        super(RadarCnn2_1, self).__init__()
+        super(Radar_Cnn_2_1, self).__init__()
         self.conv1 = nn.Sequential(
             nn.Conv1d(
                 in_channels=1,
