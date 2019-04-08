@@ -50,7 +50,7 @@ def is_satisfied_standard3(predict_list, right_location):
                 if predict_list[i] == 1:
                     target_count = target_count + 1
 
-            for i in range(i+3, len(predict_list)):
+            for i in range(right_location+3, len(predict_list)):
                 if predict_list[i] == 1:
                     target_count = target_count + 1
 
