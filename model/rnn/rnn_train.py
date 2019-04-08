@@ -17,7 +17,7 @@ pos_weight = torch.FloatTensor([1.6]).cuda(0)
 bce_loss = nn.BCEWithLogitsLoss()
 # bce_loss = nn.BCEWithLogitsLoss()
 SEQ_LEN = 64
-BATCH_SIZE = 12000
+BATCH_SIZE = 28000
 
 cp, section = config.load_config(3)
 DATA_DIR = cp.get(section, 'processed_data_dir')

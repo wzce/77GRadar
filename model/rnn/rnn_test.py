@@ -46,15 +46,15 @@ def is_satisfied_standard3(predict_list, right_location):
                 predict_list[right_location - 2] == 1:
 
             target_count = 0
-            for i in range(0, right_location-2):
+            # for i in range(0, right_location-2):
+            #     if predict_list[i] == 1:
+            #         target_count = target_count + 1
+
+            for i in range(0, len(predict_list)):
                 if predict_list[i] == 1:
                     target_count = target_count + 1
 
-            for i in range(right_location+3, len(predict_list)):
-                if predict_list[i] == 1:
-                    target_count = target_count + 1
-
-            if target_count > 3:
+            if target_count > 5:
                 return False
 
             return True
