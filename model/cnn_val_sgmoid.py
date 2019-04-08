@@ -39,7 +39,7 @@ def model_test(model_path):
         y = np.array(y).reshape(1, 1, 64)
         x = torch.FloatTensor(x).cuda(0)
         y = torch.ByteTensor(y).cuda(0)
-        prediction = model(x)
+        prediction =   model(x)
         _, max = torch.max(prediction.data, 1)
 
         predict = torch.sigmoid(prediction) > 0.015625
