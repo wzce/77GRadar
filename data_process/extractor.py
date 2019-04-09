@@ -140,8 +140,8 @@ def relist_data():
 
 
 if __name__ == '__main__':
-    empty_origin_data_dir = "D:\home\zeewei\\20190319\\line1_val"
-    save_data_name = "one_line_val_0406.npy"
+    empty_origin_data_dir = "D:\home\zeewei\\20190319\line1_val"
+    save_data_name = "one_line_val_0409.npy"
     # relist_data()
 
     # e = FeatureExtractor()

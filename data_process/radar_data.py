@@ -7,7 +7,7 @@ import os
 # DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\data_process\process_data_denoise_avg'
 # DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\data_process\processed_data'
 # DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\data_process\processed_two_days_all'
-DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\processed_data\\train_val_data_0407'
+DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\processed_data\\train_val_data_0405'
 
 PLAYGROUND_TRAIN_DATA_INPUT = os.path.join(DATA_DIR, 'pg_train_data_input.npy')
 PLAYGROUND_TRAIN_DATA_LABEL = os.path.join(DATA_DIR, 'pg_train_data_label.npy')
@@ -154,7 +154,7 @@ def load_all_data():
 
 
 def load_val_data(
-        data_path="D:\home\zeewei\projects\\77GRadar\processed_data\\one_line_val_0406.npy"):
+        data_path="D:\home\zeewei\projects\\77GRadar\processed_data\\all_two_lines_validation_set_0405.npy"):
     val_data = np.load(data_path)
     random.shuffle(val_data)
     val_data_input = []

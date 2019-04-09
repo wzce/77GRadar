@@ -103,10 +103,14 @@ def model_test(model, input_data, label_data, is_debug=False, line=0.1):
         if is_satisfied_standard2(pd, max_y_index):
             st2_num = st2_num + 1
             st2[max_y_index] = st2[max_y_index] + 1
+            if is_debug:
+                print('st2_right')
 
         if is_satisfied_standard3(pd, max_y_index):
             st3_num = st3_num + 1
             st3[max_y_index] = st3[max_y_index] + 1
+            if is_debug:
+                print('st3_right')
 
         result = torch.eq(y, predict)
         accuracy = torch.sum(result) / torch.sum(torch.ones(y.shape))
@@ -143,26 +147,24 @@ if __name__ == '__main__':
     input_data, label_data = radar_data.load_val_data()
     # train_data_input, train_data_label, input_data, label_data = radar_data.load_playground_data()
     # model_test(model, input_data, label_data, line=0.1, is_debug=True)
-
-
     st1 = []
     st2 = []
     st3 = []
 
-    line = 0.1
-
+    line = 0.99999
     st1_val, st2_val, st3_val = model_test(model, input_data, label_data, is_debug=True, line=line)
 
+    # correct_st = []
     # for i in range(1, 100, 1):
     #     line = i * 0.01
-    #     print('---> ', line)
     #     st1_val, st2_val, st3_val = model_test(model, input_data, label_data, is_debug=False, line=line)
+    #     print('---> ', line, st1_val, st2_val, st3_val)
     #     st1.append(st1_val)
     #     st2.append(st2_val)
     #     st3.append(st3_val)
     #     print(st1_val, st2_val, st3_val)
-    # correct = []
-    # correct.append(st1)
-    # correct.append(st2)
-    # correct.append(st3)
-    # np.save("D:\home\zeewei\projects\\77GRadar\exercise\\rnn_0407_correct.npy", correct)
+    #
+    #     correct_st.append(st1)
+    #     correct_st.append(st2)
+    #     correct_st.append(st3)
+    #     np.save("D:\home\zeewei\projects\\77GRadar\model\cnn\\cnn_0406_correct_st.npy", correct_st)
