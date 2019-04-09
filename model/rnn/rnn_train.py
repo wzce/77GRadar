@@ -19,7 +19,7 @@ bce_loss = nn.BCEWithLogitsLoss()
 SEQ_LEN = 64
 BATCH_SIZE = 28000
 
-cp, section = config.load_config(3)
+cp, section = config.load_config(5)
 DATA_DIR = cp.get(section, 'processed_data_dir')
 
 train_result_log = os.path.join(DATA_DIR, cp.get(section, 'train_result_log'))

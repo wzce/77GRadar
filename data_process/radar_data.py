@@ -11,11 +11,11 @@ import os
 from configparser import ConfigParser
 import config
 
-cp, section = config.load_config(2)
+cp, section = config.load_config(4)
 DATA_DIR = cp.get(section, 'processed_data_dir')
 processed_train_data = os.path.join(DATA_DIR, cp.get(section, 'train_data_file_name'))
 
-cp, section = config.load_config(3)
+cp, section = config.load_config(5)
 processed_val_data = os.path.join(DATA_DIR, cp.get(section, 'val_data_file_name'))
 
 PLAYGROUND_TRAIN_DATA_INPUT = os.path.join(DATA_DIR, 'pg_train_data_input.npy')
