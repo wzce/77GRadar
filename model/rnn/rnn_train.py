@@ -26,23 +26,23 @@ train_result_log = os.path.join(DATA_DIR, cp.get(section, 'train_result_log'))
 model_save_dir = cp.get(section, 'model_save_dir')
 
 
-def loss_fn(predict, target, seq_len=SEQ_LEN):
-    loss = bce_loss(predict.view(-1), target.view(-1))
-    return loss
-
-
 # def loss_fn(predict, target, seq_len=SEQ_LEN):
-#     one_mask = torch.eq(target, 1).cuda(0)
-#     # one_mask[0] = 1
-#     zero_mask = torch.randint(seq_len, size=target.shape).cuda(0) > 28
-#     mask = one_mask | zero_mask
-#     # print('     mask: ', mask.view(-1).processed_data.cpu().numpy())
-#     # m= mask.processed_data.cpu().numpy().tolist()
-#     predict = torch.masked_select(predict, mask)
-#     target = torch.masked_select(target, mask)
-#
-#     loss = bce_loss(predict, target)
+#     loss = bce_loss(predict.view(-1), target.view(-1))
 #     return loss
+
+
+def loss_fn(predict, target, seq_len=SEQ_LEN):
+    one_mask = torch.eq(target, 1).cuda(0)
+    # one_mask[0] = 1
+    zero_mask = torch.randint(seq_len, size=target.shape).cuda(0) > 28
+    mask = one_mask | zero_mask
+    # print('     mask: ', mask.view(-1).processed_data.cpu().numpy())
+    # m= mask.processed_data.cpu().numpy().tolist()
+    predict = torch.masked_select(predict, mask)
+    target = torch.masked_select(target, mask)
+
+    loss = bce_loss(predict, target)
+    return loss
 
 
 def generate_batch(input_data, label_data, batch_size=BATCH_SIZE):
