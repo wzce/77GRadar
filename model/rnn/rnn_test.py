@@ -54,7 +54,7 @@ def is_satisfied_standard3(predict_list, right_location):
                 if predict_list[i] == 1:
                     target_count = target_count + 1
 
-            if target_count > 5:
+            if target_count > 6:
                 return False
 
             return True
