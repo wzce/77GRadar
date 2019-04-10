@@ -8,6 +8,9 @@ from data_process import radar_data
 # from data_process import feature_extractor as road_data
 import os
 
+from configparser import ConfigParser
+import config
+
 SEQ_LEN = 64
 
 
@@ -154,20 +157,25 @@ def model_test(model, input_data, label_data, is_debug=False, line=0.1):
         print('st1 : ', st1)
         print('data_sca : ', data_sca)
 
-        right_distribute.distribute_cv(st1, data_sca, 36, 'st1完全正确预测分布')
-        right_distribute.distribute_cv(st2, data_sca, 36, 'st2相对预测正确率')
-        right_distribute.distribute_cv(st3, data_sca, 36, 'st3相对预测正确率')
+        # right_distribute.distribute_cv(st1, data_sca, 36, 'rnn_st1完全正确预测分布')
+        # right_distribute.distribute_cv(st2, data_sca, 36, 'st2相对预测正确率')
+        # right_distribute.distribute_cv(st3, data_sca, 36, 'st3相对预测正确率')
 
     return correct_num / total_num, st2_num / total_num, st3_num / total_num
 
 
 if __name__ == '__main__':
+    cp, section = config.load_config(5)
+    DATA_DIR = cp.get(section, 'processed_data_dir')
+
+    train_result_log = os.path.join(DATA_DIR, cp.get(section, 'train_result_log'))
+    model_location = cp.get(section, 'model_save_dir')
 
     st1 = []
     st2 = []
     st3 = []
-    model_location = 'D:\home\zeewei\projects\\77GRadar\model\\rnn\model_save_dir\\rnn2_0407'
-    model_path = os.path.join(model_location, 'cnn_5225.pkl')
+    # model_location = 'D:\home\zeewei\projects\\77GRadar\model\\rnn\model_save_dir\\rnn2_0407'
+    model_path = os.path.join(model_location, 'rnn_1525.pkl')
     model = torch.load(model_path)
     # _, _1, input_data, label_data = radar_data.load_pg_data_by_range(0, SEQ_LEN)
     input_data, label_data = radar_data.load_val_data()
