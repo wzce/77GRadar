@@ -1,9 +1,9 @@
 import sys
 
-sys.path.append('../')  #
+sys.path.append('../../')  #
 import torch
 import numpy as np
-from util.cv import right_distribute
+# from util.cv import right_distribute
 from data_process import radar_data
 # from data_process import feature_extractor as road_data
 import os
