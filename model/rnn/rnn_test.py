@@ -181,17 +181,16 @@ if __name__ == '__main__':
     input_data, label_data = radar_data.load_val_data()
     # train_data_input, train_data_label, input_data, label_data = radar_data.load_playground_data()
     line = 0.1
-    st1_val, st2_val, st3_val = model_test(model, input_data, label_data, is_debug=True, line=line)
-    # for i in range(1, 100, 1):
-    #     line = i * 0.01
-    #     print('---> ', line)
-    #     st1_val, st2_val, st3_val = model_test(model, input_data, label_data, is_debug=False, line=line)
-    #     st1.append(st1_val)
-    #     st2.append(st2_val)
-    #     st3.append(st3_val)
-    #     print(st1_val, st2_val, st3_val)
-    # correct = []
-    # correct.append(st1)
-    # correct.append(st2)
-    # correct.append(st3)
-    # np.save("D:\home\zeewei\projects\\77GRadar\exercise\\rnn_0407_correct.npy", correct)
+    # st1_val, st2_val, st3_val = model_test(model, input_data, label_data, is_debug=True, line=line)
+    for i in range(1, 100, 1):
+        line = i * 0.01
+        st1_val, st2_val, st3_val = model_test(model, input_data, label_data, is_debug=False, line=line)
+        st1.append(st1_val)
+        st2.append(st2_val)
+        st3.append(st3_val)
+        print('---> ', line, st1_val, st2_val, st3_val)
+        correct = []
+        correct.append(st1)
+        correct.append(st2)
+        correct.append(st3)
+        np.save(os.path.join(DATA_DIR, "test_val_rnn_0409_correct.npy"), correct)
