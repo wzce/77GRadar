@@ -41,4 +41,4 @@ def train_result(data_path, file_name):
 
 
 if __name__ == '__main__':
-    train_result("D:\home\zeewei\projects\\77GRadar\model\cnn\cnn_0409_1_correct_st.npy", 'cnn_st_result_0409_1')
+    train_result("D:\home\zeewei\projects\\77GRadar\model\cnn\cnn_0410_2_correct_st.npy", 'cnn_0410_2_correct_st')
