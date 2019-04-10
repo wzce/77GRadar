@@ -178,7 +178,7 @@ if __name__ == '__main__':
     st3 = correct[2]
     # model_location = 'D:\home\zeewei\projects\\77GRadar\model\\rnn\model_save_dir\\rnn2_0407'
     model_path = os.path.join(model_location, 'rnn_1525.pkl')
-    model = torch.load(model_path, map_location={{'cuda:0':'cuda:1'}})
+    model = torch.load(model_path, map_location={'cuda:0':'cuda:1'})
     # _, _1, input_data, label_data = radar_data.load_pg_data_by_range(0, SEQ_LEN)
     input_data, label_data = radar_data.load_val_data()
     # train_data_input, train_data_label, input_data, label_data = radar_data.load_playground_data()
