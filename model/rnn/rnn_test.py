@@ -172,7 +172,7 @@ if __name__ == '__main__':
     train_result_log = os.path.join(DATA_DIR, cp.get(section, 'train_result_log'))
     model_location = cp.get(section, 'model_save_dir')
 
-    correct = np.load(os.path.join(DATA_DIR, "test_val_rnn_0409_correct.npy"))
+    correct = np.load(os.path.join(DATA_DIR, "test_val_rnn_0409_correct.npy")).tolist()
     st1 = correct[0]
     st2 = correct[1]
     st3 = correct[2]
