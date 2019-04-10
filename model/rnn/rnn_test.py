@@ -171,9 +171,10 @@ if __name__ == '__main__':
     train_result_log = os.path.join(DATA_DIR, cp.get(section, 'train_result_log'))
     model_location = cp.get(section, 'model_save_dir')
 
-    st1 = []
-    st2 = []
-    st3 = []
+    correct = np.load(os.path.join(DATA_DIR, "test_val_rnn_0409_correct2.npy"))
+    st1 = correct[0]
+    st2 = correct[1]
+    st3 = correct[2]
     # model_location = 'D:\home\zeewei\projects\\77GRadar\model\\rnn\model_save_dir\\rnn2_0407'
     model_path = os.path.join(model_location, 'rnn_1525.pkl')
     model = torch.load(model_path)
@@ -182,7 +183,7 @@ if __name__ == '__main__':
     # train_data_input, train_data_label, input_data, label_data = radar_data.load_playground_data()
     line = 0.1
     # st1_val, st2_val, st3_val = model_test(model, input_data, label_data, is_debug=True, line=line)
-    for i in range(1, 100, 1):
+    for i in range(72, 100, 1):
         line = i * 0.01
         st1_val, st2_val, st3_val = model_test(model, input_data, label_data, is_debug=False, line=line)
         st1.append(st1_val)
@@ -193,4 +194,4 @@ if __name__ == '__main__':
         correct.append(st1)
         correct.append(st2)
         correct.append(st3)
-        np.save(os.path.join(DATA_DIR, "test_val_rnn_0409_correct.npy"), correct)
+        np.save(os.path.join(DATA_DIR, "test_val_rnn_0409_correct2.npy"), correct)
