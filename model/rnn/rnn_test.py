@@ -13,6 +13,7 @@ import config
 
 SEQ_LEN = 64
 
+CUDA_INDEX =1
 
 def is_satisfied_standard2(predict_list, right_location):
     ''' 标准2，预测允许前后2个距离单元内有物体，不管是否是虚假目标，有目标即可，且只允许在这几个距离单元内预测有目标 '''
@@ -100,8 +101,8 @@ def model_test(model, input_data, label_data, is_debug=False, line=0.1):
         data_sca[max_y_index] = data_sca[max_y_index] + 1
         x = np.array(x).reshape(1, SEQ_LEN, 1)
         y = np.array(y).reshape(1, SEQ_LEN, 1)
-        x = torch.FloatTensor(x).cuda(0)
-        y = torch.ByteTensor(y).cuda(0)
+        x = torch.FloatTensor(x).cuda(CUDA_INDEX)
+        y = torch.ByteTensor(y).cuda(CUDA_INDEX)
         prediction, _ = model(x, None)
 
         predict = torch.sigmoid(prediction) > line
@@ -177,7 +178,7 @@ if __name__ == '__main__':
     st3 = correct[2]
     # model_location = 'D:\home\zeewei\projects\\77GRadar\model\\rnn\model_save_dir\\rnn2_0407'
     model_path = os.path.join(model_location, 'rnn_1525.pkl')
-    model = torch.load(model_path)
+    model = torch.load(model_path, map_location={{'cuda:0':'cuda:1'}})
     # _, _1, input_data, label_data = radar_data.load_pg_data_by_range(0, SEQ_LEN)
     input_data, label_data = radar_data.load_val_data()
     # train_data_input, train_data_label, input_data, label_data = radar_data.load_playground_data()
