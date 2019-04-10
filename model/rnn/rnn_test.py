@@ -160,8 +160,8 @@ if __name__ == '__main__':
     st1 = []
     st2 = []
     st3 = []
-    model_location = 'D:\home\zeewei\projects\\77GRadar\model\\rnn\model_save_dir\\rnn2_0407'
-    model_path = os.path.join(model_location, 'cnn_5225.pkl')
+    model_location = 'D:\home\zeewei\projects\\77GRadar\model\\rnn\model_save_dir\\rnn2_1_one_0409_2'
+    model_path = os.path.join(model_location, 'rnn_1950.pkl')
     model = torch.load(model_path)
     # _, _1, input_data, label_data = radar_data.load_pg_data_by_range(0, SEQ_LEN)
     input_data, label_data = radar_data.load_val_data()

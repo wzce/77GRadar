@@ -7,7 +7,7 @@ import os
 # DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\data_process\process_data_denoise_avg'
 # DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\data_process\processed_data'
 # DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\data_process\processed_two_days_all'
-DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\processed_data\\train_val_data_0405'
+DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\processed_data\\train_val_data_0409'
 
 PLAYGROUND_TRAIN_DATA_INPUT = os.path.join(DATA_DIR, 'pg_train_data_input.npy')
 PLAYGROUND_TRAIN_DATA_LABEL = os.path.join(DATA_DIR, 'pg_train_data_label.npy')
@@ -34,7 +34,7 @@ def load_playground_data():
         # data_extractor = extractor.FeatureExtractor()  # 此处全使用默认的文件路径配置
         # data_list = data_extractor.load_data()
         print('划分数据集')
-        data_list = np.load('D:\home\zeewei\projects\\77GRadar\processed_data\\one_line_train_0406.npy')
+        data_list = np.load('D:\home\zeewei\projects\\77GRadar\processed_data\\one_line_train_0409.npy')
         random.shuffle(data_list)  # 随机打乱
         train_num = int(7 * len(data_list) / 10)  # 训练集与测试集7:3比例
         train_data = data_list[0:train_num]
@@ -154,7 +154,7 @@ def load_all_data():
 
 
 def load_val_data(
-        data_path="D:\home\zeewei\projects\\77GRadar\processed_data\\all_two_lines_validation_set_0405.npy"):
+        data_path="D:\home\zeewei\projects\\77GRadar\processed_data\one_line_val_0409.npy"):
     val_data = np.load(data_path)
     random.shuffle(val_data)
     val_data_input = []
@@ -165,11 +165,6 @@ def load_val_data(
     return val_data_input, val_data_label
 
 
-def load_pg_and_road_5000():
-    road_train_data_input = np.load("D:\home\zeewei\projects\\77GRadar\\03_31_data\\5000_pg_road_train_input.npy")
-    road_train_data_label = np.load("D:\home\zeewei\projects\\77GRadar\\03_31_data\\5000_pg_road_train_label.npy")
-
-    return road_train_data_input, road_train_data_label
 
 
 # 临时用的

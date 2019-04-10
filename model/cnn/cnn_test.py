@@ -141,8 +141,8 @@ def model_test(model, input_data, label_data, is_debug=False, line=0.1):
 
 
 if __name__ == '__main__':
-    model_location = 'D:\home\zeewei\projects\\77GRadar\model\cnn\model_dir\cnn2_1_0406'
-    model_path = os.path.join(model_location, 'cnn_4200.pkl')
+    model_location = 'D:\home\zeewei\projects\\77GRadar\model\cnn\model_dir\cnn2_1_0409'
+    model_path = os.path.join(model_location, 'cnn_2415.pkl')
     model = torch.load(model_path)
     input_data, label_data = radar_data.load_val_data()
     # train_data_input, train_data_label, input_data, label_data = radar_data.load_playground_data()
@@ -151,20 +151,20 @@ if __name__ == '__main__':
     st2 = []
     st3 = []
 
-    line = 0.99999
-    st1_val, st2_val, st3_val = model_test(model, input_data, label_data, is_debug=True, line=line)
+    line = 0.1
+    # st1_val, st2_val, st3_val = model_test(model, input_data, label_data, is_debug=True, line=line)
 
-    # correct_st = []
-    # for i in range(1, 100, 1):
-    #     line = i * 0.01
-    #     st1_val, st2_val, st3_val = model_test(model, input_data, label_data, is_debug=False, line=line)
-    #     print('---> ', line, st1_val, st2_val, st3_val)
-    #     st1.append(st1_val)
-    #     st2.append(st2_val)
-    #     st3.append(st3_val)
-    #     print(st1_val, st2_val, st3_val)
-    #
-    #     correct_st.append(st1)
-    #     correct_st.append(st2)
-    #     correct_st.append(st3)
-    #     np.save("D:\home\zeewei\projects\\77GRadar\model\cnn\\cnn_0406_correct_st.npy", correct_st)
+    correct_st = []
+    for i in range(1, 100, 1):
+        line = i * 0.01
+        st1_val, st2_val, st3_val = model_test(model, input_data, label_data, is_debug=False, line=line)
+        print('---> ', line, st1_val, st2_val, st3_val)
+        st1.append(st1_val)
+        st2.append(st2_val)
+        st3.append(st3_val)
+        print(st1_val, st2_val, st3_val)
+
+        correct_st.append(st1)
+        correct_st.append(st2)
+        correct_st.append(st3)
+        np.save("D:\home\zeewei\projects\\77GRadar\model\cnn\\cnn_0409_1_correct_st.npy", correct_st)

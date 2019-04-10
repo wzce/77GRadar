@@ -34,12 +34,9 @@ def loss_fn(predict, target):
 
 
 def train(model, model_save_dir, epochs=1000, save_line=0.7, learn_rate=LR):
-    # train_data_input, train_data_label, test_data_input, test_data_label = radar_data.load_pg_data_by_range(0, 64)
-    # _1, _, test_data_input, test_data_label = radar_data.rerange_road_data()
-    # train_data_input, train_data_label = radar_data.load_pg_and_road_5000()
 
-    train_data_input, train_data_label, test_data_input, test_data_label = radar_data.load_playground_data()
-    # test_data_input, test_data_label = radar_data.load_val_data()
+    train_data_input, train_data_label, test_data_input_, test_data_label_ = radar_data.load_playground_data()
+    test_data_input, test_data_label = radar_data.load_val_data()
     td = test_data_input
     tl = test_data_label
     test_data_num = len(test_data_input)
@@ -110,14 +107,14 @@ def train(model, model_save_dir, epochs=1000, save_line=0.7, learn_rate=LR):
             pr.append(st1_ac)
             pr.append(st2_ac)
             pr.append(st3_ac)
-            np.save("D:\home\zeewei\projects\\77GRadar\model\cnn\model_dir\\train_cnn1_1_0406.npy", pr)
+            np.save("D:\home\zeewei\projects\\77GRadar\model\cnn\model_dir\\train_cnn2_1_0409_2.npy", pr)
 
     print('test_min_loss: ', min_loss)
 
 
 if __name__ == '__main__':
-    cnn_model_dir = 'D:\home\zeewei\projects\\77GRadar\model\cnn\model_dir\cnn1_1_0406\\'
-    model = cnn_model.RadarCnn1_1 ().cuda(0)
+    cnn_model_dir = 'D:\home\zeewei\projects\\77GRadar\model\cnn\model_dir\cnn2_1_0409_2\\'
+    model = cnn_model.Radar_Cnn_2_1().cuda(0)
     # model = torch.load("D:\home\zeewei\projects\\77GRadar\model\cnn\model_dir\cnn2_1\cnn9990.pkl")
-    epochs = 5000
+    epochs = 8000
     train(model, cnn_model_dir, epochs, 0.05, learn_rate=1e-3)

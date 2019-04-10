@@ -8,10 +8,10 @@ from model.rnn import rnn_test
 
 LR = 1e-4
 pos_weight = torch.FloatTensor([1.6]).cuda(0)
-bce_loss = nn.BCEWithLogitsLoss(pos_weight=pos_weight)
-# bce_loss = nn.BCEWithLogitsLoss()
+# bce_loss = nn.BCEWithLogitsLoss(pos_weight=pos_weight)
+bce_loss = nn.BCEWithLogitsLoss()
 SEQ_LEN = 64
-BATCH_SIZE = 4000
+BATCH_SIZE = 15000
 
 
 # def loss_fn(predict, target, seq_len=SEQ_LEN):
@@ -135,7 +135,7 @@ def train_with_pg_data(model, model_save_dir, epochs=3000, save_line=0.7, learn_
             pr.append(st2_ac)
             pr.append(st3_ac)
 
-            np.save('D:\home\zeewei\projects\\77GRadar\model\\rnn\\train_process_0407_1.npy', pr)
+            np.save('D:\home\zeewei\projects\\77GRadar\model\\rnn\\train_process_0409_2.npy', pr)
             # print(log)
             # print(log, file=f)
     print('test_min_loss: ', min_loss)
@@ -150,6 +150,6 @@ if __name__ == '__main__':
     model = rnn_model.RadarRnn2(INPUT_SIZE=1).cuda(0)
     # model = torch.load(
         # "D:\home\zeewei\projects\\77GRadar\model\\rnn\model_save_dir\\rnn2-32-4-0\\rnn_loss2_9990_270_0.pkl")
-    cnn_model_dir = 'D:\home\zeewei\projects\\77GRadar\model\\rnn\model_save_dir\\rnn2_0407_1\\'
+    cnn_model_dir = 'D:\home\zeewei\projects\\77GRadar\model\\rnn\model_save_dir\\rnn2_1_one_0409_2\\'
     epochs = 10000
     train_with_pg_data(model, cnn_model_dir, epochs=epochs, save_line=0.8, learn_rate=1e-3)
