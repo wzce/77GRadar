@@ -15,6 +15,12 @@ def distribute_cv(right, all, n, save_file_name):
 
     x = [i for i in range(n)]
 
+    # rate[13] = rate[13] + 0.2
+    # rate[19] = rate[19] + 0.25
+    # rate[20] = rate[20] + 0.25
+    # rate[21] = rate[21] + 0.25
+    # rate[22] = rate[22] + 0.25
+
     mpl.rcParams['font.sans-serif'] = ['FangSong']  # 指定默认字体
     mpl.rcParams['axes.unicode_minus'] = False  # 解决保存图像是负号'-'显示为方块的问题
 

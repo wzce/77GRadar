@@ -79,8 +79,8 @@ def model_test(model, input_data, label_data, is_debug=False, line=0.1):
 
         data_sca[max_y_index] = data_sca[max_y_index] + 1
 
-        x = np.array(x).reshape(1, 1, 64)
-        y = np.array(y).reshape(1, 1, 64)
+        # x = np.array(x).reshape(1, 1, 64)
+        # y = np.array(y).reshape(1, 1, 64)
         x = torch.FloatTensor(x).cuda(0)
         y = torch.ByteTensor(y).cuda(0)
         prediction = model(x)
@@ -133,9 +133,9 @@ def model_test(model, input_data, label_data, is_debug=False, line=0.1):
         print('st1 : ', st1)
         print('data_sca : ', data_sca)
 
-        right_distribute.distribute_cv(st1, data_sca, 36, 'cnn_st1完全正确预测分布')
-        # right_distribute.distribute_cv(st2, data_sca, 36, 'cnn_st2相对预测正确率')
-        # right_distribute.distribute_cv(st3, data_sca, 36, 'cnn_st3相对预测正确率')
+        # right_distribute.distribute_cv(st1, data_sca, 36, 'cnn_st1完全正确预测分布')
+        right_distribute.distribute_cv(st2, data_sca, 36, 'cnn_st2相对预测正确率')
+        right_distribute.distribute_cv(st3, data_sca, 36, 'cnn_st3相对预测正确率')
 
     return correct_num / total_num, st2_num / total_num, st3_num / total_num
 

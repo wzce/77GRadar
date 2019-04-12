@@ -160,13 +160,13 @@ if __name__ == '__main__':
     st1 = []
     st2 = []
     st3 = []
-    model_location = 'D:\home\zeewei\projects\\77GRadar\model\\rnn\model_save_dir\\rnn2_1_one_0409_2'
-    model_path = os.path.join(model_location, 'rnn_1950.pkl')
+    model_location = 'D:\home\zeewei\projects\\77GRadar\model\\rnn\model_save_dir\\rnn2_1_0409'
+    model_path = os.path.join(model_location, 'rnn_1525.pkl')
     model = torch.load(model_path)
     # _, _1, input_data, label_data = radar_data.load_pg_data_by_range(0, SEQ_LEN)
     input_data, label_data = radar_data.load_val_data()
     # train_data_input, train_data_label, input_data, label_data = radar_data.load_playground_data()
-    line = 0.1
+    line = 0.32
     st1_val, st2_val, st3_val = model_test(model, input_data, label_data, is_debug=True, line=line)
     # for i in range(1, 100, 1):
     #     line = i * 0.01
