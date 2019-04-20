@@ -4,6 +4,7 @@ import numpy as np
 import os
 
 DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\classification_train_data'
+PROCESSED_DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\classification_train_data'
 
 PLAYGROUND_TRAIN_DATA_INPUT = os.path.join(DATA_DIR, 'pg_train_data.npy')
 PLAYGROUND_TRAIN_DATA_LABEL = os.path.join(DATA_DIR, 'pg_train_label.npy')
@@ -49,14 +50,14 @@ def load_playground_data():
     test_data = car_data[car_train_data_len:len(car_data)]
     test_label = [1 for i in range(len(test_data))]
 
-    np.save("D:\home\zeewei\projects\\77GRadar\classification_train_data\\pg_car_val_data.numpy", test_data)
-    np.save("D:\home\zeewei\projects\\77GRadar\classification_train_data\\pg_car_val_label.numpy", test_label)
+    np.save(os.path.join(PROCESSED_DATA_DIR, "pg_car_val_data.numpy"), test_data)
+    np.save(os.path.join(PROCESSED_DATA_DIR, "pg_car_val_label.numpy"), test_label)
 
     empty_test_data = empty_data[empty_train_data_len:len(empty_data)]
     empty_test_label = [0 for i in range(len(empty_test_data))]
 
-    np.save("D:\home\zeewei\projects\\77GRadar\classification_train_data\\pg_empty_val_data.numpy", empty_test_data)
-    np.save("D:\home\zeewei\projects\\77GRadar\classification_train_data\\pg_empty_val_label.numpy", empty_test_label)
+    np.save(os.path.join(PROCESSED_DATA_DIR, "pg_empty_val_data.numpy"), empty_test_data)
+    np.save(os.path.join(PROCESSED_DATA_DIR, "pg_empty_val_label.numpy"), empty_test_label)
 
     for item in empty_test_data:
         test_data.append(item)
