@@ -1,8 +1,8 @@
 class DataConfig:
     origin_data_dir = 'D:\\home\\zeewei\\20190319\\line1_train\\'
     process_data_dir = 'D:\\home\\zeewei\\projects\\77GRadar\\processed_data\\train_val_data_0409'
-    train_data_file_name = 'one_line_train_data_0409.npy'
-    val_data_file_name = 'one_line_val_data_0409.npy'
+    train_data_file_name = 'one_line_train_0409.npy'
+    val_data_file_name = 'one_line_val_0409.npy'
 
     train_result_log = 'train_one_line_log.npy'
     model_save_dir = 'D:\home\zeewei\projects\\77GRadar\model\cnn\model_dir\cnn2_1'
@@ -11,6 +11,8 @@ class DataConfig:
     train_data_label = 'pg_train_data_label.npy'
     test_data_input = 'pg_test_data_input.npy'
     test_data_label = 'pg_test_data_label.npy'
+
+    train_parameter_file = "D:\home\zeewei\projects\\77GRadar\model\cnn\model_dir\\train_cnn2_1_0410_2.npy"
 
     def __init__(self):
         pass

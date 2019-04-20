@@ -4,6 +4,7 @@ import numpy as np
 from util.cv import right_distribute
 from data_process import radar_data
 import os
+from config import data_config
 
 
 def is_satisfied_standard2(predict_list, right_location):
@@ -65,7 +66,6 @@ def model_test(model, input_data, label_data, is_debug=False, line=0.1):
     st2 = np.zeros(64)
     st3 = np.zeros(64)
     data_sca = np.zeros(64)
-    right_location_num = 0
     for step in range(len(input_data)):
         if is_debug:
             print('\n<----------------------------------------------------------', step)
@@ -141,7 +141,8 @@ def model_test(model, input_data, label_data, is_debug=False, line=0.1):
 
 
 if __name__ == '__main__':
-    model_location = 'D:\home\zeewei\projects\\77GRadar\model\cnn\model_dir\cnn2_1_0410_2'
+    config = data_config.DataConfig()
+    model_location = config.model_save_dir
     model_path = os.path.join(model_location, 'cnn_3060.pkl')
     model = torch.load(model_path)
     # input_data, label_data = radar_data.load_val_data(
