@@ -8,7 +8,6 @@ from data_process import radar_data_decoder
 
 ORIGIN_DATA_DIR = "D:\home\zeewei\\20190319\\radar_data"
 PROCESSED_DATA_DIR = 'D:\home\zeewei\projects\\77GRadar\\processed_data'
-
 INPUT_DATA_FILE_NAME = 'all_two_lines_data_0406_4avg.npy'  # 两条线路的全部训练数据
 
 OUTPUT_LIST_LEN = 64
@@ -118,8 +117,8 @@ class FeatureExtractor:
 
 
 if __name__ == '__main__':
-    empty_origin_data_dir = "D:\home\zeewei\\20190319\line1_val"
+    origin_data_dir = "D:\home\zeewei\\20190319\line1_val"
     save_data_name = "one_line_val_0409.npy"
-    e = FeatureExtractor(origin_data_dir=empty_origin_data_dir,
+    e = FeatureExtractor(origin_data_dir=origin_data_dir,
                          input_data_file_name=save_data_name)
     e.load_data()

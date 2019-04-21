@@ -5,6 +5,7 @@ from torch import nn
 from data_process import radar_data
 from model.rnn import rnn_model
 from model.rnn import rnn_test
+from config import data_config
 
 LR = 1e-4
 pos_weight = torch.FloatTensor([1.6]).cuda(0)
@@ -33,23 +34,10 @@ def loss_fn(predict, target, seq_len=SEQ_LEN):
     return loss
 
 
-def generate_batch(input_data, label_data, batch_size=BATCH_SIZE):
-    batch_num = int(len(input_data) / batch_size)
-    batch_data_input = []
-    batch_data_label = []
-    for i in range(batch_num):
-        batch_input = input_data[batch_num * batch_size:(batch_num + 1) * batch_size]
-        batch_label = label_data[batch_num * batch_size:(batch_num + 1) * batch_size]
-        batch_data_input.append(batch_input)
-        batch_data_label.append(batch_label)
-    batch_data_input.append(input_data[batch_num * batch_size:])
-    batch_data_label.append(label_data[batch_num * batch_size:])
-    return batch_data_input, batch_data_label
-
-
-def train_with_pg_data(model, model_save_dir, epochs=3000, save_line=0.7, learn_rate=LR, seq_len=SEQ_LEN):
-    # train_data_input, train_data_label, test_data_input, test_data_label = radar_data.load_pg_data_by_range(0, 64)
+def train_with_pg_data(model, model_save_dir, train_parameter_file, epochs=3000, save_line=0.7, learn_rate=LR,
+                       seq_len=SEQ_LEN):
     train_data_input, train_data_label, test_data_input, test_data_label = radar_data.load_playground_data()
+    test_data_input, test_data_label = radar_data.load_val_data()
     td = test_data_input
     tl = test_data_label
 
@@ -73,10 +61,9 @@ def train_with_pg_data(model, model_save_dir, epochs=3000, save_line=0.7, learn_
     min_loss = 22
     optimizer = torch.optim.Adam(model.parameters(), lr=learn_rate)
 
-    batch_data_input, batch_data_label = generate_batch(train_data_tensor, train_label_tensor)
+    batch_data_input, batch_data_label = radar_data.generate_batch(train_data_tensor, train_label_tensor)
 
     h_state = None  # 第一次的时候，暂存为0
-    t_state = None
     # f = open("log.txt", "w")
 
     ep = []
@@ -135,21 +122,19 @@ def train_with_pg_data(model, model_save_dir, epochs=3000, save_line=0.7, learn_
             pr.append(st2_ac)
             pr.append(st3_ac)
 
-            np.save('D:\home\zeewei\projects\\77GRadar\model\\rnn\\train_process_0409_2.npy', pr)
+            np.save(train_parameter_file, pr)
             # print(log)
             # print(log, file=f)
     print('test_min_loss: ', min_loss)
 
 
 if __name__ == '__main__':
-    # model = rnn_model.RadarRnn4(INPUT_SIZE=1).cuda(0)
-    # cnn_model_dir = 'D:\home\zeewei\projects\\77GRadar\model\\rnn\model_save_dir\\rnn4-32-8-0\\'
-    # epochs = 10000
-    # train_with_pg_data(model, cnn_model_dir, epochs=epochs, save_line=0.12, learn_rate=5e-4)
+    config = data_config.DataConfig()
+    rnn_model_dir = config.rnn_model_save_dir
 
     model = rnn_model.RadarRnn2(INPUT_SIZE=1).cuda(0)
+    train_parameter_file = 'D:\home\zeewei\projects\\77GRadar\model\\rnn\\train_process_log.npy'
     # model = torch.load(
-        # "D:\home\zeewei\projects\\77GRadar\model\\rnn\model_save_dir\\rnn2-32-4-0\\rnn_loss2_9990_270_0.pkl")
-    cnn_model_dir = 'D:\home\zeewei\projects\\77GRadar\model\\rnn\model_save_dir\\rnn2_1_one_0409_2\\'
+    # "D:\home\zeewei\projects\\77GRadar\model\\rnn\model_save_dir\\rnn2-32-4-0\\rnn_loss2_9990_270_0.pkl")
     epochs = 10000
-    train_with_pg_data(model, cnn_model_dir, epochs=epochs, save_line=0.8, learn_rate=1e-3)
+    train_with_pg_data(model, rnn_model_dir, train_parameter_file, epochs=epochs, save_line=0.8, learn_rate=1e-3)

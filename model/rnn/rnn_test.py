@@ -5,58 +5,10 @@ from util.cv import right_distribute
 from data_process import radar_data
 # from data_process import feature_extractor as road_data
 import os
+from config import data_config
+from util import standard_define
 
 SEQ_LEN = 64
-
-
-def is_satisfied_standard2(predict_list, right_location):
-    ''' 标准2，预测允许前后2个距离单元内有物体，不管是否是虚假目标，有目标即可，且只允许在这几个距离单元内预测有目标 '''
-    if right_location >= 2 and right_location <= 62:
-        if predict_list[right_location] == 1 \
-                or predict_list[right_location + 1] == 1 or \
-                predict_list[right_location - 1] == 1 or \
-                predict_list[right_location + 2] == 1 or \
-                predict_list[right_location - 2] == 1:
-
-            for i in range(right_location + 3, 64):
-                if predict_list[i] == 1:
-                    return False
-
-            for i in range(right_location - 2):
-                if predict_list[i] == 1:
-                    return False
-
-            return True
-    else:
-        if predict_list[right_location] == 1:
-            return True
-        else:
-            return False
-
-
-def is_satisfied_standard3(predict_list, right_location):
-    ''' 标准2，预测允许前后2个距离单元内有物体，不管是否是虚假目标，有目标即可，且只允最多允许3个虚假目标 '''
-    if right_location >= 2 and right_location <= 62:
-        if predict_list[right_location] == 1 \
-                or predict_list[right_location + 1] == 1 or \
-                predict_list[right_location - 1] == 1 or \
-                predict_list[right_location + 2] == 1 or \
-                predict_list[right_location - 2] == 1:
-
-            target_count = 0
-            for i in range(0, 64):
-                if predict_list[i] == 1:
-                    target_count = target_count + 1
-
-            if target_count > 5:
-                return False
-
-            return True
-    else:
-        if predict_list[right_location] == 1:
-            return True
-        else:
-            return False
 
 
 def model_test(model, input_data, label_data, is_debug=False, line=0.1):
@@ -71,7 +23,6 @@ def model_test(model, input_data, label_data, is_debug=False, line=0.1):
     st3 = np.zeros(64)
     data_sca = np.zeros(64)
 
-    right_location_num = 0
     zero_num = 0
     for step in range(len(input_data)):
         if is_debug:
@@ -120,11 +71,11 @@ def model_test(model, input_data, label_data, is_debug=False, line=0.1):
             print('difference:', res)
 
         # 在某个位置前后偏离两个位置
-        if is_satisfied_standard2(pd, max_y_index):
+        if standard_define.is_satisfied_standard2(pd, max_y_index):
             st2_num = st2_num + 1
             st2[max_y_index] = st2[max_y_index] + 1
 
-        if is_satisfied_standard3(pd, max_y_index):
+        if standard_define.is_satisfied_standard3(pd, max_y_index):
             st3_num = st3_num + 1
             st3[max_y_index] = st3[max_y_index] + 1
 
@@ -156,10 +107,13 @@ def model_test(model, input_data, label_data, is_debug=False, line=0.1):
 
 
 if __name__ == '__main__':
-
     st1 = []
     st2 = []
     st3 = []
+
+    config = data_config.DataConfig()
+    model_location = config.rnn_model_save_dir
+
     model_location = 'D:\home\zeewei\projects\\77GRadar\model\\rnn\model_save_dir\\rnn2_1_0409'
     model_path = os.path.join(model_location, 'rnn_1525.pkl')
     model = torch.load(model_path)

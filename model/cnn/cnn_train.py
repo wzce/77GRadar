@@ -114,7 +114,7 @@ def train(model, model_save_dir, train_parameter_file, epochs=1000, save_line=0.
 
 if __name__ == '__main__':
     config = data_config.DataConfig()
-    cnn_model_dir = config.model_save_dir
+    cnn_model_dir = config.cnn_model_save_dir
     model = cnn_model.Radar_Cnn_2_1().cuda(0)
     # model = torch.load("D:\home\zeewei\projects\\77GRadar\model\cnn\model_dir\cnn2_1\cnn9990.pkl")
     epochs = 5000
